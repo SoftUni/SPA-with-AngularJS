@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ngChange live demo</title>
+</head>
+<body ng-app="app" ng-controller="NgChangeController">
+	<input type="checkbox" ng-model="checked" ng-change="checkboxChange()" />
+	<div>Checked: {{checked}}</div>
+	<div>Click counter: {{counter}}</div>
+
+	<script type="text/javascript" src="../../node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript">
+		angular.module('app', [])
+			.controller('NgChangeController', ['$scope', function ($scope) {
+				$scope.counter = 0;
+				$scope.checkboxChange = function checkboxChange() {
+					$scope.counter += 1;
+				}
+			}])
+	</script>
+</body>
+</html>
