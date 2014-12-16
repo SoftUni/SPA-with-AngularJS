@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bind Directives</title>
+</head>
+<body ng-app="app" ng-controller="ExpressionsController">
+
+	<div>{{ [12, 32, 42, 2, 1, 43, 222].sort()[0]}}</div>
+	<div>{{ 'Hello ' + 'Pesho' }}</div>
+	<div>{{ 'Maraba ' + name }}</div>
+
+	<script type="text/javascript" src="../node_modules/angular/angular.min.js"></script>
+	<script>
+		var app = angular.module('app', [])
+			.controller('ExpressionsController', function ExpressionsController($scope) {
+				// Expressions not support all JavaScript syntax. They support only subset of JS functionality.
+				$scope.name = 'Svetlin';
+				$scope.firstValue = 34;
+				$scope.secondValue = 83;
+			});
+	</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>My AngularJS App</title>
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css" />
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body ng-app="myApp">
+	<div class="container">
+		<div class="navbar">
+			<ul class="nav">
+				<li><a href="#/News">News</a></li>
+			</ul>
+		</div>
+		
+		<div ng-controller="NewsController">
+			<h1>{{news.name | uppercase}}</h1>
+			<div><strong>Date:</strong> {{news.date | date:'dd.MMM.yyyy'}}</div>
+			<div>
+				<strong>Author:</strong> 
+				<img ng-src="{{news.author.picture}}" width="20" /> 
+				<span>{{news.author.name}}</span>
+				<span>({{news.author.company}})</span> <br />
+
+				<!-- Filters -->
+				
+				<span>Role: {{news.author.role | role}}</span> <br />
+
+				<!-- Filters -->
+				
+				<span><strong>Number: </strong>{{ 2 | number:2}}</span>
+				<span><strong>Number: </strong>{{ 2.23123423 | number:2}}</span>
+				<span><strong>Price: </strong>{{news.price | currency}}</span>
+			</div>
+			<hr />
+			<img class="pull-right" ng-src="{{news.imageUrl}}" width="300"/>
+			<div class="top-buffer">{{news.content}}</div> 
+			<br />
+			<div>
+				<h2>Comments:</h2>
+				<div>
+					OrderBy:
+					<select ng-model="sortOrder">
+						<option selected value="-votes">Votes</option>
+						<option value="author">Author</option>
+						<option value="-date">Date</option>
+					</select>
+					Show:
+					<select ng-model="filterBy.author">
+						<option selected value="">All</option>
+						<option value="vladimir">Vladimir</option>
+						<option value="svetlin">Svetlin</option>
+						<option value="petya">Petya</option>
+					</select>
+				</div>
+				<ul id="comments">
+					<li ng-repeat="comment in news.comments | orderBy:sortOrder | filter:filterBy">
+						<div class="row well">
+							<div class="col-md-1">
+								<div ng-click="upVote(comment)">
+									<span class="glyphicon glyphicon-chevron-up"></span> 
+								</div>
+								<div class="badge badge-inverse icon-dark">
+									{{comment.votes}}
+								</div>
+								<div ng-click="downVote(comment)">
+									<span class="glyphicon glyphicon-chevron-down"></span>
+								</div>
+							</div>
+							<div class="col-md-11">
+								<strong>{{comment.author}}</strong>
+								<span class="pull-right">{{comment.date}}</span>
+								<br />
+								{{comment.content}} <br/>
+								<a href="{{comment.website}}">{{comment.website}}</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="../../node_modules/angular/angular.js"></script>
+	<script src="../../node_modules/angular-route/angular-route.js"></script>
+	<script src="scripts/app.js"></script>
+	<script src="scripts/controllers/news-controller.js"></script>
+	<script src="scripts/filters/role-filter.js"></script>
+</body>
+</html>
