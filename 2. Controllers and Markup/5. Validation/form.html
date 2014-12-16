@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-theme.min.css" />
+</head>
+<body>
+	<div class="container">
+		<h1>Create news</h1>
+		<hr />
+		<form>
+			<fieldset>
+				<label for="title">Title:</label> <br />
+				<input id="title" type="text" required class="input-small" placeholder="Input news title" /> <br />
+				<label for="content">Content:</label> <br />
+				<input id="content" type="text" class="input-small" placeholder="Input news content" /> <br />
+				<label for="imageUrl">Image url:</label> <br />
+				<input id="imageUrl" type="text" ng-pattern="http:\/\/.*\.com"  class="input-small" placeholder="Input news image url" /> <br />
+			</fieldset>
+			<fieldset>
+				<legend>Author:</legend> <br />
+				<label for="authorName">Author name:</label> <br />
+				<input id="authorName" type="text" class="input-small" placeholder="Input author name" /> <br />
+				<label for="authorCompany">Author Company:</label> <br />
+				<input id="authorCompany" type="text" class="input-small" placeholder="Input author company" /> <br />
+				<label for="authorPicture">Picture:</label> <br />
+				<input id="authorPicture" type="text" class="input-small" placeholder="Input author picture" /> <br />
+			</fieldset>
+			<br />
+			<input type="submit" class="btn btn-primary" value="Save"/>
+			<button class="btn btn-default">Cancel</button>
+		</form>
+	</div>
+	<script src="../node_modules/angular/angular.js"></script>
+</body>
+</html>
