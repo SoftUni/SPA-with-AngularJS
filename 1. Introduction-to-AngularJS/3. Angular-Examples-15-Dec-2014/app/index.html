@@ -1,0 +1,30 @@
+<header ng-include="'header.html'"></header>
+<body ng-app="softUniApp_" ng-controller="SoftUniApp">
+
+<script src="lib/angular/angular.js"></script>
+
+<img ng-src="{{url}}" src="">
+
+<h1> {{name}} </h1>
+<ul>
+<li ng-repeat="car in cars" ng-class-even="_ngClassOdd">
+	<strong>Model: </strong> {{car.model}}
+	<strong>Color: </strong> {{car.color}}
+	<strong>Year: </strong> {{car.year}}
+</li>
+</ul>
+
+<ul>
+	<li ng-repeat="x in _resp_" ng-class-even="class">
+		{{x.Name}} --- {{x.Country}} --- {{x.City}}
+	</li>
+</ul>
+
+<input type="text" ng-model="Username" />
+
+<div ng-bind="Username"></div>
+
+<script src="js/app.js"></script>
+<script src="js/controllers/SoftUniApp.js"></script>
+</body>
+</html>
