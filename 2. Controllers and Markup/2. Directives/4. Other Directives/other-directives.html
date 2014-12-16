@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bind Directives</title>
+</head>
+<body ng-app="app" ng-controller="DirectivesController">
+
+	<button ng-disabled="btnDisabled">Disabled</button>
+	<input type="checkbox" ng-checked="checboxChecked" />
+
+	<script type="text/javascript" src="../../node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript">
+		angular.module('app', [])
+			.controller('DirectivesController', ['$scope', function ($scope) {
+				$scope.btnDisabled = true;
+				$scope.checboxChecked = true;
+				// When you change the value of property, immediatly will change the button/checkbox.
+			}]);
+	</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bind Directives</title>
+</head>
+<body ng-app="app" ng-controller="DirectivesController">
+	<h1 ng-bind="greeting.title"></h1>
+	<h1 ng-bind-template="{{greeting.title}} - {{greeting.description}} - {{greeting.date}}"></h1>
+	<div ng-bind-html="htmlSnippet"></div>
+
+	<h2 ng-show="boolValue">This is visible</h2>
+	<h2 ng-hide="boolValue">This is hidden</h2>
+
+	<script type="text/javascript" src="../../node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="../../node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+	<script type="text/javascript">
+		angular.module('app', ['ngSanitize'])
+			.controller('DirectivesController', ['$scope', function ($scope) {
+				$scope.greeting = {
+					title: 'WazZaaaaa SoftUni?',
+					description: 'How are you guys',
+					date: new Date().toDateString()
+				};
+
+				$scope.htmlSnippet = '<span style="color:green">Pesho</span>';
+				$scope.boolValue = true; // Only manipulate the DOM using directives. Never manipulate DOM in a controller using jQuery.
+			}]);
+	</script>
+</body>
+</html>

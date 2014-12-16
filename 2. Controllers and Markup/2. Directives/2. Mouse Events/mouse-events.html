@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ngChange live demo</title>
+	<style>
+		#mouse-up-down {
+			width: 100px;
+			height: 100px;
+			background-color: #0a0;
+		}
+	</style>
+</head>
+<body ng-app="app" ng-controller="NgChangeController">
+	<button ng-click="clicked()">Click</button>
+	<button ng-dblclick="doubleClicked()">Click twice</button>
+
+	<div>Clicks: {{clickCounter}}</div>
+	<div>Double clicks: {{doubleClickCounter}}</div>
+	<div id="mouse-up-down" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()">
+		{{mouseUpDownText}}
+	</div>
+
+	<script type="text/javascript" src="../../node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript">
+		angular.module('app', [])
+			.controller('NgChangeController', ['$scope', function ($scope) {
+				$scope.clickCounter = 0;
+				$scope.doubleClickCounter = 0;
+				$scope.mouseUpDownText = 'Hover me';
+				$scope.clicked = function clicked() {
+					$scope.clickCounter += 1;
+				}
+
+				$scope.doubleClicked = function doubleClicked() {
+					$scope.doubleClickCounter += 1;
+				}
+
+				$scope.onMouseEnter = function onMouseEnter() {
+					$scope.mouseUpDownText = 'Mouse inside';
+				}
+
+				$scope.onMouseLeave = function onMouseLeave() {
+					$scope.mouseUpDownText = 'Mouse outside';
+				}
+			}])
+	</script>
+</body>
+</html>
