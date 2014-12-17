@@ -1,0 +1,505 @@
+{
+	"id": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+	"name": "Ads REST Services",
+	"description": "Ads REST Services",
+	"order": [
+		"a414c18c-57cb-c6e2-221c-e8106792fd06",
+		"8251f17b-c0f0-ee44-598f-da9ec0d6a80a",
+		"b1826216-75d4-8cad-6967-a8409da31eac",
+		"8a3d75e1-37cc-d92a-fe78-f00454774503",
+		"b4dd042a-6c58-7681-cc16-8f602c479fe1",
+		"cd75746f-2058-c9cf-e973-91d7248e6478",
+		"96867049-f4a1-774f-6224-4ce897458996",
+		"5b940291-497a-adf1-d3cd-4c2c4bba5cb7",
+		"d02bf63b-e365-70ec-7cd3-f06f05dc7f66",
+		"e7f228ea-a756-4cfe-cce6-829d419ed349",
+		"86ca4a0f-5e44-a86a-5072-48273e355933",
+		"d7889408-8b20-c066-5770-6715fa56d153",
+		"61d10abd-97e3-8501-d6ba-178fd20e7fdf",
+		"bcf0506e-305c-ed49-3524-60cd977e73bb",
+		"2db2b899-6db6-3f6e-a945-57d442867743"
+	],
+	"folders": [],
+	"timestamp": 1418737833798,
+	"synced": false,
+	"remoteLink": "",
+	"requests": [
+		{
+			"id": "2db2b899-6db6-3f6e-a945-57d442867743",
+			"headers": "Authorization: Bearer bbj1-EOys_Xk7GNvummlI3_wItqVw9o5oCtWgRSCcHkmec77yhxWD9XnpXlwaZ1JTnmGYi7vp2AaFxx5OQFH8sr4CJNPSas-qq_3vfoMw2V77YC8oAPhyNkJv_2n7tFs4oXBde9W40SUBIsqK3IMQKsupaZeottxGuvKL4LB38PeF8qC-CwdiQM7DOrIPJH4CcFuaIznsDke2ORMsIZrVTlXqSAXXj96Jw3Eut8MDzDMKVU192NZu-yEOm4OhI_lzcsSz81X_yphI7361fwBcbvT4xSUxZOkC2q-gexWUW7iajgDa7poG8doi5b8Dn3_bkvkoZfmQI8s9ORmYcQGA2cr7yvVSV9iZkK7_tCjyZz_0eMwbk7Ns4scLiDB5SQt9ddFBJQcdRi1TyqPA4_Ap1FYhbwh_BtYFXg0ndC1lRDL9vsH0M-kT1w7wESCbejUknerIGpVKwJyviI5uKOCc_lMq3f5KHvJWy2wUw0S6jY\n",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/profile",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [
+				{
+					"key": "name",
+					"value": "Updated User",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "email",
+					"value": "updated@gmail.com",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "phonenumber",
+					"value": "(new phone) +359 123 456",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "townid",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768744655,
+			"name": "Edit User Profile",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "5b940291-497a-adf1-d3cd-4c2c4bba5cb7",
+			"headers": "Authorization: Bearer bbj1-EOys_Xk7GNvummlI3_wItqVw9o5oCtWgRSCcHkmec77yhxWD9XnpXlwaZ1JTnmGYi7vp2AaFxx5OQFH8sr4CJNPSas-qq_3vfoMw2V77YC8oAPhyNkJv_2n7tFs4oXBde9W40SUBIsqK3IMQKsupaZeottxGuvKL4LB38PeF8qC-CwdiQM7DOrIPJH4CcFuaIznsDke2ORMsIZrVTlXqSAXXj96Jw3Eut8MDzDMKVU192NZu-yEOm4OhI_lzcsSz81X_yphI7361fwBcbvT4xSUxZOkC2q-gexWUW7iajgDa7poG8doi5b8Dn3_bkvkoZfmQI8s9ORmYcQGA2cr7yvVSV9iZkK7_tCjyZz_0eMwbk7Ns4scLiDB5SQt9ddFBJQcdRi1TyqPA4_Ap1FYhbwh_BtYFXg0ndC1lRDL9vsH0M-kT1w7wESCbejUknerIGpVKwJyviI5uKOCc_lMq3f5KHvJWy2wUw0S6jY\n",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/ads/deactivate/22",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768530066,
+			"name": "Deactivate User Ad",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "61d10abd-97e3-8501-d6ba-178fd20e7fdf",
+			"headers": "Authorization: Bearer bbj1-EOys_Xk7GNvummlI3_wItqVw9o5oCtWgRSCcHkmec77yhxWD9XnpXlwaZ1JTnmGYi7vp2AaFxx5OQFH8sr4CJNPSas-qq_3vfoMw2V77YC8oAPhyNkJv_2n7tFs4oXBde9W40SUBIsqK3IMQKsupaZeottxGuvKL4LB38PeF8qC-CwdiQM7DOrIPJH4CcFuaIznsDke2ORMsIZrVTlXqSAXXj96Jw3Eut8MDzDMKVU192NZu-yEOm4OhI_lzcsSz81X_yphI7361fwBcbvT4xSUxZOkC2q-gexWUW7iajgDa7poG8doi5b8Dn3_bkvkoZfmQI8s9ORmYcQGA2cr7yvVSV9iZkK7_tCjyZz_0eMwbk7Ns4scLiDB5SQt9ddFBJQcdRi1TyqPA4_Ap1FYhbwh_BtYFXg0ndC1lRDL9vsH0M-kT1w7wESCbejUknerIGpVKwJyviI5uKOCc_lMq3f5KHvJWy2wUw0S6jY\n",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/changepassword",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [
+				{
+					"key": "username",
+					"value": "testuser",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "oldPassword",
+					"value": "123",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "newPassword",
+					"value": "newpass",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "confirmPassword",
+					"value": "newpass",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768603243,
+			"name": "Change Password",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "8251f17b-c0f0-ee44-598f-da9ec0d6a80a",
+			"headers": "",
+			"url": "http://softuni-ads.azurewebsites.net/api/ads?pagesize=3&startpage=2",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"name": "Get All Ads (with Paging)",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1418738147600,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"synced": false
+		},
+		{
+			"id": "86ca4a0f-5e44-a86a-5072-48273e355933",
+			"headers": "Authorization: Bearer bbj1-EOys_Xk7GNvummlI3_wItqVw9o5oCtWgRSCcHkmec77yhxWD9XnpXlwaZ1JTnmGYi7vp2AaFxx5OQFH8sr4CJNPSas-qq_3vfoMw2V77YC8oAPhyNkJv_2n7tFs4oXBde9W40SUBIsqK3IMQKsupaZeottxGuvKL4LB38PeF8qC-CwdiQM7DOrIPJH4CcFuaIznsDke2ORMsIZrVTlXqSAXXj96Jw3Eut8MDzDMKVU192NZu-yEOm4OhI_lzcsSz81X_yphI7361fwBcbvT4xSUxZOkC2q-gexWUW7iajgDa7poG8doi5b8Dn3_bkvkoZfmQI8s9ORmYcQGA2cr7yvVSV9iZkK7_tCjyZz_0eMwbk7Ns4scLiDB5SQt9ddFBJQcdRi1TyqPA4_Ap1FYhbwh_BtYFXg0ndC1lRDL9vsH0M-kT1w7wESCbejUknerIGpVKwJyviI5uKOCc_lMq3f5KHvJWy2wUw0S6jY\n",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/ads/22",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [
+				{
+					"key": "title",
+					"value": "Changed Ad Title",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "text",
+					"value": "Changed ad text content",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "changeimage",
+					"value": "true",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "ImageDataURL",
+					"value": "data:image/jpeg;base64,iVBORw0KGgo...",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "categoryid",
+					"value": "5",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "townid",
+					"value": "2",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768562629,
+			"name": "Edit Ad",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "8a3d75e1-37cc-d92a-fe78-f00454774503",
+			"headers": "",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/register",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "username",
+					"value": "test_user",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "123",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "confirmPassword",
+					"value": "123",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "name",
+					"value": "Test User",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "email",
+					"value": "test_user@gmail.com",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "phone",
+					"value": "+359 2 981 981",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "townId",
+					"value": "3",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768344953,
+			"name": "Register",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "96867049-f4a1-774f-6224-4ce897458996",
+			"headers": "Authorization: Bearer bbj1-EOys_Xk7GNvummlI3_wItqVw9o5oCtWgRSCcHkmec77yhxWD9XnpXlwaZ1JTnmGYi7vp2AaFxx5OQFH8sr4CJNPSas-qq_3vfoMw2V77YC8oAPhyNkJv_2n7tFs4oXBde9W40SUBIsqK3IMQKsupaZeottxGuvKL4LB38PeF8qC-CwdiQM7DOrIPJH4CcFuaIznsDke2ORMsIZrVTlXqSAXXj96Jw3Eut8MDzDMKVU192NZu-yEOm4OhI_lzcsSz81X_yphI7361fwBcbvT4xSUxZOkC2q-gexWUW7iajgDa7poG8doi5b8Dn3_bkvkoZfmQI8s9ORmYcQGA2cr7yvVSV9iZkK7_tCjyZz_0eMwbk7Ns4scLiDB5SQt9ddFBJQcdRi1TyqPA4_Ap1FYhbwh_BtYFXg0ndC1lRDL9vsH0M-kT1w7wESCbejUknerIGpVKwJyviI5uKOCc_lMq3f5KHvJWy2wUw0S6jY\n",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/ads",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768453240,
+			"name": "Get User Ads",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "a414c18c-57cb-c6e2-221c-e8106792fd06",
+			"headers": "",
+			"url": "http://softuni-ads.azurewebsites.net/api/ads",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"name": "Get All Ads",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1418738094577,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"synced": false
+		},
+		{
+			"id": "b1826216-75d4-8cad-6967-a8409da31eac",
+			"headers": "",
+			"url": "http://softuni-ads.azurewebsites.net/api/ads?townid=10&categoryid=8",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"name": "Get All Ads (with Filters)",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1418741483395,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"synced": false
+		},
+		{
+			"id": "b4dd042a-6c58-7681-cc16-8f602c479fe1",
+			"headers": "",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/login",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "test_user",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "123",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768379907,
+			"name": "Login",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "bcf0506e-305c-ed49-3524-60cd977e73bb",
+			"headers": "Authorization: Bearer bbj1-EOys_Xk7GNvummlI3_wItqVw9o5oCtWgRSCcHkmec77yhxWD9XnpXlwaZ1JTnmGYi7vp2AaFxx5OQFH8sr4CJNPSas-qq_3vfoMw2V77YC8oAPhyNkJv_2n7tFs4oXBde9W40SUBIsqK3IMQKsupaZeottxGuvKL4LB38PeF8qC-CwdiQM7DOrIPJH4CcFuaIznsDke2ORMsIZrVTlXqSAXXj96Jw3Eut8MDzDMKVU192NZu-yEOm4OhI_lzcsSz81X_yphI7361fwBcbvT4xSUxZOkC2q-gexWUW7iajgDa7poG8doi5b8Dn3_bkvkoZfmQI8s9ORmYcQGA2cr7yvVSV9iZkK7_tCjyZz_0eMwbk7Ns4scLiDB5SQt9ddFBJQcdRi1TyqPA4_Ap1FYhbwh_BtYFXg0ndC1lRDL9vsH0M-kT1w7wESCbejUknerIGpVKwJyviI5uKOCc_lMq3f5KHvJWy2wUw0S6jY\n",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/profile",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768643629,
+			"name": "Get User Profile",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "cd75746f-2058-c9cf-e973-91d7248e6478",
+			"headers": "Authorization: Bearer bbj1-EOys_Xk7GNvummlI3_wItqVw9o5oCtWgRSCcHkmec77yhxWD9XnpXlwaZ1JTnmGYi7vp2AaFxx5OQFH8sr4CJNPSas-qq_3vfoMw2V77YC8oAPhyNkJv_2n7tFs4oXBde9W40SUBIsqK3IMQKsupaZeottxGuvKL4LB38PeF8qC-CwdiQM7DOrIPJH4CcFuaIznsDke2ORMsIZrVTlXqSAXXj96Jw3Eut8MDzDMKVU192NZu-yEOm4OhI_lzcsSz81X_yphI7361fwBcbvT4xSUxZOkC2q-gexWUW7iajgDa7poG8doi5b8Dn3_bkvkoZfmQI8s9ORmYcQGA2cr7yvVSV9iZkK7_tCjyZz_0eMwbk7Ns4scLiDB5SQt9ddFBJQcdRi1TyqPA4_Ap1FYhbwh_BtYFXg0ndC1lRDL9vsH0M-kT1w7wESCbejUknerIGpVKwJyviI5uKOCc_lMq3f5KHvJWy2wUw0S6jY\n",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/ads",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "title",
+					"value": "New Ad",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "text",
+					"value": "This is a new ad",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "categoryid",
+					"value": "3",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "townid",
+					"value": "4",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768420204,
+			"name": "Create New Ad",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "d02bf63b-e365-70ec-7cd3-f06f05dc7f66",
+			"headers": "Authorization: Bearer bbj1-EOys_Xk7GNvummlI3_wItqVw9o5oCtWgRSCcHkmec77yhxWD9XnpXlwaZ1JTnmGYi7vp2AaFxx5OQFH8sr4CJNPSas-qq_3vfoMw2V77YC8oAPhyNkJv_2n7tFs4oXBde9W40SUBIsqK3IMQKsupaZeottxGuvKL4LB38PeF8qC-CwdiQM7DOrIPJH4CcFuaIznsDke2ORMsIZrVTlXqSAXXj96Jw3Eut8MDzDMKVU192NZu-yEOm4OhI_lzcsSz81X_yphI7361fwBcbvT4xSUxZOkC2q-gexWUW7iajgDa7poG8doi5b8Dn3_bkvkoZfmQI8s9ORmYcQGA2cr7yvVSV9iZkK7_tCjyZz_0eMwbk7Ns4scLiDB5SQt9ddFBJQcdRi1TyqPA4_Ap1FYhbwh_BtYFXg0ndC1lRDL9vsH0M-kT1w7wESCbejUknerIGpVKwJyviI5uKOCc_lMq3f5KHvJWy2wUw0S6jY\n",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/ads/publishagain/22",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768523956,
+			"name": "Publish Again User Ad",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "d7889408-8b20-c066-5770-6715fa56d153",
+			"headers": "Authorization: Bearer bbj1-EOys_Xk7GNvummlI3_wItqVw9o5oCtWgRSCcHkmec77yhxWD9XnpXlwaZ1JTnmGYi7vp2AaFxx5OQFH8sr4CJNPSas-qq_3vfoMw2V77YC8oAPhyNkJv_2n7tFs4oXBde9W40SUBIsqK3IMQKsupaZeottxGuvKL4LB38PeF8qC-CwdiQM7DOrIPJH4CcFuaIznsDke2ORMsIZrVTlXqSAXXj96Jw3Eut8MDzDMKVU192NZu-yEOm4OhI_lzcsSz81X_yphI7361fwBcbvT4xSUxZOkC2q-gexWUW7iajgDa7poG8doi5b8Dn3_bkvkoZfmQI8s9ORmYcQGA2cr7yvVSV9iZkK7_tCjyZz_0eMwbk7Ns4scLiDB5SQt9ddFBJQcdRi1TyqPA4_Ap1FYhbwh_BtYFXg0ndC1lRDL9vsH0M-kT1w7wESCbejUknerIGpVKwJyviI5uKOCc_lMq3f5KHvJWy2wUw0S6jY\n",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/ads/22",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768585179,
+			"name": "Delete Ad by Id",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "e7f228ea-a756-4cfe-cce6-829d419ed349",
+			"headers": "Authorization: Bearer bbj1-EOys_Xk7GNvummlI3_wItqVw9o5oCtWgRSCcHkmec77yhxWD9XnpXlwaZ1JTnmGYi7vp2AaFxx5OQFH8sr4CJNPSas-qq_3vfoMw2V77YC8oAPhyNkJv_2n7tFs4oXBde9W40SUBIsqK3IMQKsupaZeottxGuvKL4LB38PeF8qC-CwdiQM7DOrIPJH4CcFuaIznsDke2ORMsIZrVTlXqSAXXj96Jw3Eut8MDzDMKVU192NZu-yEOm4OhI_lzcsSz81X_yphI7361fwBcbvT4xSUxZOkC2q-gexWUW7iajgDa7poG8doi5b8Dn3_bkvkoZfmQI8s9ORmYcQGA2cr7yvVSV9iZkK7_tCjyZz_0eMwbk7Ns4scLiDB5SQt9ddFBJQcdRi1TyqPA4_Ap1FYhbwh_BtYFXg0ndC1lRDL9vsH0M-kT1w7wESCbejUknerIGpVKwJyviI5uKOCc_lMq3f5KHvJWy2wUw0S6jY\n",
+			"url": "http://softuni-ads.azurewebsites.net/api/user/ads/22",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1418768514964,
+			"name": "Get Ad by Id",
+			"description": "",
+			"collectionId": "25987916-05d1-4cf4-d613-77a7e2f7a1f3",
+			"responses": [],
+			"synced": false
+		}
+	]
+}
