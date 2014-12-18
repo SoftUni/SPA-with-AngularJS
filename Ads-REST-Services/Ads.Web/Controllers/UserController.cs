@@ -5,6 +5,7 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
@@ -81,11 +82,11 @@
         [HttpPost]
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> RegisterUser(RegisterUserBindingModel model)
+        public async Task<HttpResponseMessage> RegisterUser(RegisterUserBindingModel model)
         {
             if (!ModelState.IsValid)
             {
-                return this.BadRequest(this.ModelState);
+                return await this.BadRequest(this.ModelState).ExecuteAsync(new CancellationToken());
             }
 
             var user = new ApplicationUser
@@ -101,16 +102,15 @@
 
             if (!result.Succeeded)
             {
-                return this.GetErrorResult(result);
+                return await this.GetErrorResult(result).ExecuteAsync(new CancellationToken());
             }
 
-            return this.Ok(
-                new
-                {
-                    message = "User " + model.Username + " registered successfully.",
-                    userId = user.Id
-                }
-            );
+            var loginResult = this.LoginUser(new LoginUserBindingModel()
+            {
+                Username = model.Username,
+                Password = model.Password
+            });
+            return await loginResult;
         }
 
         // POST api/User/Logout
