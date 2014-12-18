@@ -1,7 +1,6 @@
 ﻿namespace Ads.Web.Controllers
 {
     using System.Web.Http;
-
     using Ads.Data;
     using Microsoft.AspNet.Identity;
 

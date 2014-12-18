@@ -22,9 +22,6 @@
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional });
-
-            var jsonFormatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
-            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

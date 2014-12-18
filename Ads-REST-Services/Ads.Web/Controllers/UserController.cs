@@ -1,56 +1,43 @@
 ﻿namespace Ads.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using System.Web;
     using System.Web.Http;
     using Ads.Web.Properties;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.Cookies;
     using Ads.Data;
     using Ads.Models;
     using Ads.Web.Models.Users;
+    using System.Text;
 
     [Authorize]
     [RoutePrefix("api/user")]
-    public class UsersController : BaseApiController
+    public class UserController : BaseApiController
     {
         private ApplicationUserManager userManager;
 
-        public UsersController()
+        public UserController()
             : base(new AdsData())
         {
             this.userManager = new ApplicationUserManager(
                 new UserStore<ApplicationUser>(new ApplicationDbContext()));
         }
 
-        public UsersController(ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, IAdsData data)
-            : base(data)
-        {
-            this.UserManager = userManager;
-            this.AccessTokenFormat = accessTokenFormat;
-        }
-
         public ApplicationUserManager UserManager
         {
             get
             {
-                return this.userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-
-            private set
-            {
-                this.userManager = value;
+                return this.userManager;
             }
         }
-
-        public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
         private IAuthenticationManager Authentication
         {
@@ -59,7 +46,37 @@
                 return Request.GetOwinContext().Authentication;
             }
         }
-        
+
+        // POST api/User/Login
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("Login")]
+        public async Task<HttpResponseMessage> LoginUser(LoginUserBindingModel model)
+        {
+            // Invoke the "token" OWIN service to perform the login
+            // Ugly implementation: I use server-side HTTP POST because I cannot directly invoke the service (it is deeply hidden in the OAuthAuthorizationServerHandler class)
+            var request = HttpContext.Current.Request;
+            var tokenServiceUrl = request.Url.GetLeftPart(UriPartial.Authority) + request.ApplicationPath + Startup.TokenEndpointPath;
+            using (var client = new HttpClient())
+            {
+                var requestParams = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("grant_type", "password"),
+                    new KeyValuePair<string, string>("username", model.Username),
+                    new KeyValuePair<string, string>("password", model.Password)
+                };
+                var requestParamsFormUrlEncoded = new FormUrlEncodedContent(requestParams);
+                var tokenServiceResponse = await client.PostAsync(tokenServiceUrl, requestParamsFormUrlEncoded);
+                var responseString = await tokenServiceResponse.Content.ReadAsStringAsync();
+                var responseCode = tokenServiceResponse.StatusCode;
+                var responseMsg = new HttpResponseMessage(responseCode)
+                {
+                    Content = new StringContent(responseString, Encoding.UTF8, "application/json")
+                };
+                return responseMsg;
+            }
+        }
+
         // POST api/User/Register
         [HttpPost]
         [AllowAnonymous]
@@ -375,6 +392,7 @@
 
         // PUT api/User/ChangePassword
         [HttpPut]
+        [AllowAnonymous]
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangeUserPassword(ChangePasswordBindingModel model)
         {

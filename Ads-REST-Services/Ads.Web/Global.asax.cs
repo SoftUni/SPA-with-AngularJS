@@ -8,6 +8,7 @@
 
     using Ads.Data;
     using Ads.Data.Migrations;
+    using Newtonsoft.Json.Serialization;
 
     public class WebApiApplication : System.Web.HttpApplication
     {
@@ -20,6 +21,9 @@
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            GlobalConfiguration.Configuration.Formatters
+                .JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

@@ -26,19 +26,19 @@
             this.publicClientId = publicClientId;
         }
 
-        public static AuthenticationProperties CreateProperties(string userName)
+        public static AuthenticationProperties CreateProperties(string username)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "userName", userName }
+                { "username", username }
             };
             return new AuthenticationProperties(data);
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            // TODO: This throws a null reference exception: var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-            var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var userManager = new ApplicationUserManager(
+                new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
             var user = await userManager.FindAsync(context.UserName, context.Password);
 

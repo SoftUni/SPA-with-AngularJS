@@ -18,7 +18,7 @@ namespace Ads.Web
 
     public partial class Startup
     {
-        private const string TokenEndpointPath = "/api/user/login";
+        public const string TokenEndpointPath = "/api/token";
         private const string PublicClientId = "self";
 
         static Startup()

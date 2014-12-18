@@ -225,11 +225,12 @@
     <Compile Include="Models\Admin\AdminGetUsersBindingModel.cs" />
     <Compile Include="Models\Admin\AdminGetAdsBindingModel.cs" />
     <Compile Include="Models\Admin\AdminUpdateAdBindingModel.cs" />
+    <Compile Include="Models\Users\LoginUserBindingModel.cs" />
     <Compile Include="Models\Users\UserUpdateAdBindingModel.cs" />
     <Compile Include="Models\Users\UserCreateAdBindingModel.cs" />
     <Compile Include="Models\Ads\GetAdsBindingModel.cs" />
     <Compile Include="Controllers\TownsController.cs" />
-    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
