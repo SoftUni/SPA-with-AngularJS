@@ -226,8 +226,8 @@
                 text = ad.Text,
                 date = ad.Date.ToString("o"),
                 imageDataUrl = ad.ImageDataURL,
-                categoryName = ad.Category.Name,
-                townName = ad.Town.Name,
+                categoryName = ad.Category == null ? null : ad.Category.Name,
+                townName = ad.Town == null ? null : ad.Town.Name,
                 status = ad.Status.ToString(),
             });
 
