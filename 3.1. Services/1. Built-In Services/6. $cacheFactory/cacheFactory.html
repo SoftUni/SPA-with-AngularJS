@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>$http and $q services in AngularJS</title>
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css" />
+</head>
+<body ng-app="app" ng-controller="CacheExampleController">
+	<div class="container">
+		<h1>Add to cache</h1>
+		Key: <input type="text" ng-model="key" /> <br />
+		Value: <input type="text" ng-model="value" /> <br />
+		<button type="button" class="btn" ng-click="addToCache(key, value)">Add to cache</button>
+		
+	</div>
+	<br />
+	<br />
+	<div class="container">
+		<h1>Get from cache</h1>
+		Key: <input type="text" ng-model="readKey" /> <br />
+		<div>Cache value: {{ readFromCache(readKey) }}</div>
+		<br />
+	</div>
+	<script src="../../node_modules/angular/angular.js"></script>
+	<script src="../../node_modules/angular-resource/angular-resource.js"></script>
+	<script src="scripts/app.js"></script>
+	<script src="scripts/services/cache-example-service.js"></script>
+	<script src="scripts/controllers/cache-example-controller.js"></script>
+</body>
+</html>

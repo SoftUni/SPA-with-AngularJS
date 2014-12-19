@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>$http and $q services in AngularJS</title>
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css" />
+  <link rel="stylesheet" href="styles/app.css" />
+</head>
+<body ng-app="app" ng-controller="AdsController">
+	<div class="container">
+		<h1>User ads</h1>
+		<ul>
+			<li ng-repeat="ad in data.ads" class="well">
+				<h1>{{ad.title}}</h1>
+				<div><strong>Text:</strong> {{ad.text}}</div>
+				<div><strong>Town:</strong> {{ad.townName}}</div>
+				<div><strong>Category:</strong> {{ad.categoryName}}</div>
+				<div><strong>Status:</strong> {{ad.status}}</div>
+			</li>
+		</ul>
+	</div>	
+	<div class="container well">
+		<h1>Add by id</h1>
+		<div>
+			Title: {{ title }}
+		</div>
+		<div>
+			Text: {{ text }}
+		</div>
+		<div>
+			Town: {{ townName }}
+		</div>
+		<div>
+			Category: {{ categoryName }}
+		</div>
+		<div>
+			Status: {{ status }}
+		</div>
+	</div>
+	<script src="../../node_modules/angular/angular.js"></script>
+	<script src="../../node_modules/angular-resource/angular-resource.js"></script>
+	<script src="scripts/app.js"></script>
+	<script src="scripts/services/ads-data.js"></script>
+	<script src="scripts/controllers/ads-controller.js"></script>
+</body>
+</html>

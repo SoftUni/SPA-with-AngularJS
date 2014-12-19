@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>$http and $q services in AngularJS</title>
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css" />
+  <link rel="stylesheet" href="styles/app.css" />
+</head>
+<body ng-app="app" ng-controller="AdsController">
+	<div class="container">
+		<ul>
+			<li ng-repeat="ad in data.ads">
+				<div>{{ad.title}}</div>
+			</li>
+		</ul>
+	</div>	
+	<script src="../../node_modules/angular/angular.js"></script>
+	<script src="scripts/app.js"></script>
+	<script src="scripts/services/ads-data.js"></script>
+	<script src="scripts/controllers/ads-controller.js"></script>
+</body>
+</html>
