@@ -310,9 +310,9 @@
                 date = ad.Date.ToString("o"),
                 imageDataUrl = ad.ImageDataURL,
                 categoryId = ad.CategoryId,
-                categoryName = ad.Category.Name,
+                categoryName = ad.Category == null ? null : ad.Category.Name,
                 townId = ad.TownId,
-                townName = ad.Town.Name
+                townName = ad.Town == null ? null : ad.Town.Name
             });
         }
 
