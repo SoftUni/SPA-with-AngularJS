@@ -469,6 +469,11 @@
                 return this.BadRequest("Invalid user token! Please login again!");
             }
 
+            if (User.Identity.GetUserName() == "admin")
+            {
+                return this.BadRequest("Edit profile for user 'admin' is not allowed!");
+            }
+
             currentUser.Name = model.Name;
             currentUser.Email = model.Email;
             currentUser.PhoneNumber = model.PhoneNumber;
