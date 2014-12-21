@@ -1,0 +1,10 @@
+.pesho {
+	color:red;
+}
+
+.pesho:hover {
+	color:blue 
+}
+.even_row {
+	background: red;
+}

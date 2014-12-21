@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Creating Routes</title>
+	<link rel="stylesheet" href="lib/bootstrap/bootstrap.min.css" />
+	<link rel="stylesheet" href="lib/bootstrap/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/app.css" />
+</head>
+<body ng-app="softUniApp">
+	<div class="container">
+		<div class="navbar">
+			<ul class="nav">
+				<li><a href="#/newAd">New Ad</a></li>
+				<li><a href="#/ads">All Ads</a></li>
+			</ul>
+		</div>
+
+		<ng-view></ng-view>
+	</div>
+
+	<script src="lib/angular/angular.js"></script>
+	<script src="lib/angular/angular-route.js"></script>
+	<script src="lib/angular/angular-resource.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/services/adsData.js"></script>
+	<script src="js/controllers/NewAdController.js"></script>
+	<script src="js/controllers/AllAdsController.js"></script>
+</body>
+</html>
