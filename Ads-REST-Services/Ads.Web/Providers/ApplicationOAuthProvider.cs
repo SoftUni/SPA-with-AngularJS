@@ -26,12 +26,16 @@
             this.publicClientId = publicClientId;
         }
 
-        public static AuthenticationProperties CreateProperties(string username)
+        public static AuthenticationProperties CreateProperties(string username, bool isAdmin)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "username", username }
+                { "username", username },
             };
+            if (isAdmin)
+            {
+                data.Add("isAdmin", "true");
+            }
             return new AuthenticationProperties(data);
         }
 
@@ -51,7 +55,9 @@
             var oauthIdentity = await user.GenerateUserIdentityAsync(userManager, OAuthDefaults.AuthenticationType);
             var cookiesIdentity = await user.GenerateUserIdentityAsync(userManager, CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.UserName);
+            bool isAdmin = await userManager.IsInRoleAsync(user.Id, "Administrator");
+
+            AuthenticationProperties properties = CreateProperties(user.UserName, isAdmin);
             var ticket = new AuthenticationTicket(oauthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
