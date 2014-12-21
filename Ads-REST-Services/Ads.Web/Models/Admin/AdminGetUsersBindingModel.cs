@@ -13,8 +13,6 @@
 
         public string OrderByColumn { get; set; }
 
-        public SortDirection? SortDirection { get; set; }
-        
         [Range(1, 100000, ErrorMessage = "Page number should be in range [1...100000].")]
         public int? StartPage { get; set; }
 

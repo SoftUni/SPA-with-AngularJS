@@ -3,7 +3,7 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Net.Http;
-    using System.Web.Helpers;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using Ads.Models;
     using Ads.Web.Models.Admin;
@@ -159,7 +159,7 @@
         // PUT api/Admin/Ads/Approve/{id}
         [HttpPut]
         [Route("Ads/Approve/{id:int}")]
-        public IHttpActionResult Deactivate(int id)
+        public IHttpActionResult Approve(int id)
         {
             var ad = this.Data.Ads.All().FirstOrDefault(a => a.Id == id);
 
@@ -174,7 +174,26 @@
 
             return this.Ok(new { message = "Advertisment published." });
         }
-        
+
+        // PUT api/Admin/Ads/Reject/{id}
+        [HttpPut]
+        [Route("Ads/Reject/{id:int}")]
+        public IHttpActionResult Reject(int id)
+        {
+            var ad = this.Data.Ads.All().FirstOrDefault(a => a.Id == id);
+
+            if (ad == null)
+            {
+                return this.BadRequest("Advertisement " + id + " not found!");
+            }
+
+            ad.Status = AdvertisementStatus.Rejected;
+
+            this.Data.SaveChanges();
+
+            return this.Ok(new { message = "Advertisment rejected." });
+        }
+
         // PUT api/Admin/Ads/{id}
         [HttpPut]
         [Route("Ads/{id:int}")]
@@ -249,31 +268,47 @@
            );
         }
 
-        //// POST api/Admin/SetPassword
-        //[HttpPost]
-        //[Route("SetPassword")]
-        //private async Task<IHttpActionResult> SetUserPassword(AdminSetPasswordBindingModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return this.BadRequest(this.ModelState);
-        //    }
+        // POST api/Admin/SetPassword
+        [HttpPost]
+        [Route("SetPassword")]
+        private async Task<IHttpActionResult> SetUserPassword(AdminSetPasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
 
-        //    var result = await this.UserManager.AddPasswordAsync(
-        //        model.UserId, model.NewPassword);
+            var user = await this.Data.Users.All().FirstOrDefaultAsync(u => u.UserName == model.Username);
+            if (user == null)
+            {
+                return this.BadRequest("Not existing user: " + model.Username);
+            }
 
-        //    if (!result.Succeeded)
-        //    {
-        //        return this.GetErrorResult(result);
-        //    }
+            if (user.UserName == "admin")
+            {
+                return this.BadRequest("Password change for user 'admin' is not allowed!");
+            }
 
-        //    return this.Ok(
-        //        new
-        //        {
-        //            message = "Password changed successfully.",
-        //        }
-        //    );
-        //}
+            var removePassResult = await this.UserManager.RemovePasswordAsync(user.Id);
+            if (!removePassResult.Succeeded)
+            {
+                return this.GetErrorResult(removePassResult);
+            }
+
+            var addPassResult = await this.UserManager.AddPasswordAsync(
+                user.Id, model.NewPassword);
+            if (!addPassResult.Succeeded)
+            {
+                return this.GetErrorResult(addPassResult);
+            }
+
+            return this.Ok(
+                new
+                {
+                    message = "Password for user " + user.UserName + " changed successfully.",
+                }
+            );
+        }
 
         // GET api/Admin/Users
         [HttpGet]
@@ -286,17 +321,17 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            // Select all users, ordered by the specified column
+            // Select all users, ordered by the specified column (prefix '-' for descending)
             var users = this.Data.Users.All();
             if (model.OrderByColumn != null)
             {
-                if (model.SortDirection.HasValue && model.SortDirection == SortDirection.Ascending)
+                if (model.OrderByColumn.StartsWith("-"))
                 {
-                    users = users.OrderBy(model.OrderByColumn);
+                    users = users.OrderByDescending(model.OrderByColumn.Substring(1));
                 }
                 else
                 {
-                    users = users.OrderByDescending(model.OrderByColumn);
+                    users = users.OrderBy(model.OrderByColumn);
                 }
             }
 
