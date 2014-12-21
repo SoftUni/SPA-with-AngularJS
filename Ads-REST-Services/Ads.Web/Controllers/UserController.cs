@@ -393,13 +393,17 @@
 
         // PUT api/User/ChangePassword
         [HttpPut]
-        [AllowAnonymous]
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangeUserPassword(ChangePasswordBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
+            }
+
+            if (User.Identity.GetUserName() == "admin")
+            {
+                return this.BadRequest("Password change for user 'admin' is not allowed!");
             }
 
             IdentityResult result = await this.UserManager.ChangePasswordAsync(
