@@ -1,0 +1,14 @@
+.pesho {
+	color:red;
+}
+
+.pesho:hover {
+	color:blue 
+}
+.even_row {
+	background: red;
+}
+
+ul li {
+	list-style: none;
+}
