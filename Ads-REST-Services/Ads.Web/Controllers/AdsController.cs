@@ -68,6 +68,8 @@
                 ownerName = ad.Owner.Name,
                 ownerEmail = ad.Owner.Email,
                 ownerPhone = ad.Owner.PhoneNumber,
+                categoryId = ad.CategoryId,
+                townId = ad.TownId
             });
 
             return this.Ok(
