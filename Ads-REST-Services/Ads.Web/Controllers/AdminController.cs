@@ -1,5 +1,6 @@
 ﻿namespace Ads.Web.Controllers
 {
+    using System;
     using System.Data.Entity;
     using System.Linq;
     using System.Net.Http;
@@ -48,7 +49,7 @@
         {
             if (model == null)
             {
-                // Sometimes the model is null, so we create an empty model
+                // When no parameters are passed, the model is null, so we create an empty model
                 model = new AdminGetAdsBindingModel();
             }
 
@@ -58,7 +59,7 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            // Select ads by given status, category and town
+            // Select ads by given status, category and town (apply filtering)
             var ads = this.Data.Ads.All()
                 .Include(ad => ad.Category)
                 .Include(ad => ad.Town)
@@ -75,9 +76,34 @@
             {
                 ads = ads.Where(ad => ad.TownId == model.TownId.Value);
             }
-            ads = ads.OrderByDescending(ad => ad.Date).ThenBy(ad => ad.Id);
 
-            // Find the requested page (by given start page and page size)
+            // Apply sorting by the specified column / expression (prefix '-' for descending)
+            if (model.SortBy != null)
+            {
+                try
+                {
+                    // Apply custom sorting order by the specified column / expression
+                    if (model.SortBy.StartsWith("-"))
+                    {
+                        ads = ads.OrderByDescending(model.SortBy.Substring(1)).ThenBy(ad => ad.Id);
+                    }
+                    else
+                    {
+                        ads = ads.OrderBy(model.SortBy).ThenBy(ad => ad.Id);
+                    }
+                }
+                catch (Exception)
+                {
+                    return this.BadRequest("Invalid sorting expression: " + model.SortBy);
+                }
+            }
+            else
+            {
+                // Apply the default sorting order: by date descending
+                ads = ads.OrderByDescending(ad => ad.Date).ThenBy(ad => ad.Id);
+            }
+
+            // Apply paging: find the requested page (by given start page and page size)
             int pageSize = Settings.Default.DefaultPageSize;
             if (model.PageSize.HasValue)
             {
@@ -147,9 +173,9 @@
                 ownerEmail = ad.Owner.Email,
                 ownerPhone = ad.Owner.PhoneNumber,
                 categoryId = ad.CategoryId,
-                categoryName = ad.Category.Name,
+                categoryName = (ad.Category != null) ? ad.Category.Name : null,
                 townId = ad.TownId,
-                townName = ad.Town.Name,
+                townName = (ad.Town != null) ? ad.Town.Name : null,
                 status = ad.Status.ToString(),
             };
 
@@ -321,21 +347,36 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            // Select all users, ordered by the specified column (prefix '-' for descending)
+            // Select all users
             var users = this.Data.Users.All();
-            if (model.OrderByColumn != null)
+
+            // Apply sorting by the specified column / expression (prefix '-' for descending)
+            if (model.SortBy != null)
             {
-                if (model.OrderByColumn.StartsWith("-"))
+                try
                 {
-                    users = users.OrderByDescending(model.OrderByColumn.Substring(1));
+                    // Apply custom sorting order by the specified column / expression
+                    if (model.SortBy.StartsWith("-"))
+                    {
+                        users = users.OrderByDescending(model.SortBy.Substring(1)).ThenBy(u => u.Id);
+                    }
+                    else
+                    {
+                        users = users.OrderBy(model.SortBy).ThenBy(u => u.Id);
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    users = users.OrderBy(model.OrderByColumn);
+                    return this.BadRequest("Invalid sorting expression: " + model.SortBy);
                 }
             }
+            else
+            {
+                // Apply the default sorting order: by username
+                users = users.OrderBy(u => u.UserName).ThenBy(u => u.Id);
+            }
 
-            // Find the requested page (by given start page and page size)
+            // Apply paging: find the requested page (by given start page and page size)
             int pageSize = Settings.Default.DefaultPageSize;
             if (model.PageSize.HasValue)
             {

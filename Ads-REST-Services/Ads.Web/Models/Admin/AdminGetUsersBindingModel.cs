@@ -11,9 +11,9 @@
         }
         
         /// <summary>
-        /// Column to sort by, e.g. 'username'. Use '-' as prefix for descending order, e.g. '-username'.
+        /// Sorting expression, e.g. 'UserName', '-UserName' (descending), 'Town.Name'.
         /// </summary>
-        public string OrderByColumn { get; set; }
+        public string SortBy { get; set; }
 
         [Range(1, 100000, ErrorMessage = "Page number should be in range [1...100000].")]
         public int? StartPage { get; set; }
