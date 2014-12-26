@@ -206,7 +206,7 @@
             ads = ads.Where(ad => ad.OwnerId == currentUserId);
             ads = ads.OrderByDescending(ad => ad.Date).ThenBy(ad => ad.Id);
 
-            // Find the requested page (by given start page and page size)
+            // Apply paging: find the requested page (by given start page and page size)
             int pageSize = Settings.Default.DefaultPageSize;
             if (model.PageSize.HasValue)
             {
