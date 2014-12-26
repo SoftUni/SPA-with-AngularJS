@@ -223,10 +223,12 @@
     <Compile Include="Controllers\AdsController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Models\Admin\AdminGetUsersBindingModel - Copy.cs" />
+    <Compile Include="Models\Admin\AdminTownBindingModel.cs" />
+    <Compile Include="Models\Admin\AdminGetTownsBindingModel.cs" />
+    <Compile Include="Models\Admin\AdminGetUsersBindingModel.cs" />
     <Compile Include="Models\Admin\AdminGetCategoriesBindingModel.cs" />
     <Compile Include="Models\Admin\AdminGetAdsBindingModel.cs" />
-    <Compile Include="Models\Admin\AdminEditCategoryBindingModel.cs" />
+    <Compile Include="Models\Admin\AdminCategoryBindingModel.cs" />
     <Compile Include="Models\Admin\AdminEditAdBindingModel.cs" />
     <Compile Include="Models\Admin\AdminEditUserBindingModel.cs" />
     <Compile Include="Models\Users\LoginUserBindingModel.cs" />

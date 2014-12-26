@@ -578,10 +578,10 @@
             );
         }
 
-        // PUT api/Admin/Categories/{id}
-        [HttpPut]
-        [Route("Categories/{id:int}")]
-        public IHttpActionResult EditCategory(int id, [FromBody]AdminEditCategoryBindingModel model)
+        // POST api/Admin/Categories
+        [HttpPost]
+        [Route("Categories")]
+        public IHttpActionResult CreateNewCategory([FromBody]AdminCategoryBindingModel model)
         {
             // Validate the input parameters
             if (!ModelState.IsValid)
@@ -589,7 +589,36 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            // Find the advertisement for editing
+            // Create new category and assign its properties form the model
+            var category = new Category
+            {
+                Name = model.Name
+            };
+
+            // Save the changes in the database
+            this.Data.Categories.Add(category);
+            this.Data.Categories.SaveChanges();
+
+            return this.Ok(
+                new
+                {
+                    message = "Category #" + category.Id + " created."
+                }
+            );
+        }
+
+        // PUT api/Admin/Categories/{id}
+        [HttpPut]
+        [Route("Categories/{id:int}")]
+        public IHttpActionResult EditCategory(int id, [FromBody]AdminCategoryBindingModel model)
+        {
+            // Validate the input parameters
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            // Find the category for editing
             var category = this.Data.Categories.All().FirstOrDefault(d => d.Id == id);
             if (category == null)
             {
@@ -608,6 +637,188 @@
                     message = "Category #" + id + " edited successfully."
                 }
             );
+        }
+
+        // DELETE /api/Admin/Categories/{id}
+        [HttpDelete]
+        [Route("Categories/{id:int}")]
+        public IHttpActionResult DeleteCategory(int id)
+        {
+            var category = this.Data.Categories.All().FirstOrDefault(c => c.Id == id);
+            if (category == null)
+            {
+                return this.BadRequest("Category #" + id + " not found!");
+            }
+
+            this.Data.Categories.Delete(category);
+
+            this.Data.Categories.SaveChanges();
+
+            return this.Ok(
+               new
+               {
+                   message = "Category #" + id + " deleted successfully."
+               }
+           );
+        }
+
+        // GET api/Admin/Towns
+        [HttpGet]
+        [Route("Towns")]
+        public IHttpActionResult GetTowns([FromUri]AdminGetTownsBindingModel model)
+        {
+            if (model == null)
+            {
+                // When no parameters are passed, the model is null, so we create an empty model
+                model = new AdminGetTownsBindingModel();
+            }
+
+            // Validate the input parameters
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            // Select all towns
+            var towns = this.Data.Towns.All();
+
+            // Apply sorting by the specified column / expression (prefix '-' for descending)
+            if (model.SortBy != null)
+            {
+                try
+                {
+                    // Apply custom sorting order by the specified column / expression
+                    if (model.SortBy.StartsWith("-"))
+                    {
+                        towns = towns.OrderByDescending(
+                            model.SortBy.Substring(1)).ThenBy(c => c.Id);
+                    }
+                    else
+                    {
+                        towns = towns.OrderBy(model.SortBy).ThenBy(c => c.Id);
+                    }
+                }
+                catch (Exception)
+                {
+                    return this.BadRequest("Invalid sorting expression: " + model.SortBy);
+                }
+            }
+            else
+            {
+                // Apply the default sorting order: by name
+                towns = towns.OrderBy(c => c.Name).ThenBy(c => c.Id);
+            }
+
+            // Apply paging: find the requested page (by given start page and page size)
+            int pageSize = Settings.Default.DefaultPageSize;
+            if (model.PageSize.HasValue)
+            {
+                pageSize = model.PageSize.Value;
+            }
+            var numPages = (towns.Count() + pageSize - 1) / pageSize;
+            if (model.StartPage.HasValue)
+            {
+                towns = towns.Skip(pageSize * (model.StartPage.Value - 1));
+            }
+            towns = towns.Take(pageSize);
+
+            // Select the columns to be returned 
+            var townsToReturn = towns.ToList().Select(c => new
+            {
+                id = c.Id,
+                username = c.Name
+            });
+
+            return this.Ok(
+                new
+                {
+                    numPages,
+                    towns = townsToReturn
+                }
+            );
+        }
+
+        // POST api/Admin/Towns
+        [HttpPost]
+        [Route("Towns")]
+        public IHttpActionResult CreateNewTown([FromBody]AdminTownBindingModel model)
+        {
+            // Validate the input parameters
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            // Create new town and assign its properties form the model
+            var town = new Town
+            {
+                Name = model.Name
+            };
+
+            // Save the changes in the database
+            this.Data.Towns.Add(town);
+            this.Data.Towns.SaveChanges();
+
+            return this.Ok(
+                new
+                {
+                    message = "Town #" + town.Id + " created."
+                }
+            );
+        }
+
+        // PUT api/Admin/Towns/{id}
+        [HttpPut]
+        [Route("Towns/{id:int}")]
+        public IHttpActionResult EditTown(int id, [FromBody]AdminTownBindingModel model)
+        {
+            // Validate the input parameters
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            // Find the town for editing
+            var town = this.Data.Towns.All().FirstOrDefault(d => d.Id == id);
+            if (town == null)
+            {
+                return this.BadRequest("Town #" + id + " not found!");
+            }
+
+            // Modify the town properties
+            town.Name = model.Name;
+
+            // Save the changes in the database
+            this.Data.Towns.SaveChanges();
+
+            return this.Ok(
+                new
+                {
+                    message = "Town #" + id + " edited successfully."
+                }
+            );
+        }
+
+        // DELETE /api/Admin/Towns/{id}
+        [HttpDelete]
+        [Route("Towns/{id:int}")]
+        public IHttpActionResult DeleteTown(int id)
+        {
+            var town = this.Data.Towns.All().FirstOrDefault(c => c.Id == id);
+            if (town == null)
+            {
+                return this.BadRequest("Town #" + id + " not found!");
+            }
+
+            this.Data.Towns.Delete(town);
+            this.Data.Towns.SaveChanges();
+
+            return this.Ok(
+               new
+               {
+                   message = "Town #" + id + " deleted successfully."
+               }
+           );
         }
         
         protected override void Dispose(bool disposing)

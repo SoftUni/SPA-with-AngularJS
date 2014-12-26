@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class AdminEditCategoryBindingModel
+    public class AdminCategoryBindingModel
     {
         [Required]
         public string Name { get; set; }
