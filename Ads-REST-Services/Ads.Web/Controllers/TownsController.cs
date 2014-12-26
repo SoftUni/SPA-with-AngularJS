@@ -20,11 +20,11 @@
         }
 
         // GET api/Towns
-        /// <returns>List of all towns sorted by name</returns>
+        /// <returns>List of all towns sorted by Id</returns>
         [HttpGet]
         public IEnumerable<Town> GetTowns()
         {
-            var towns = this.Data.Towns.All().OrderBy(town => town.Name).ToList();
+            var towns = this.Data.Towns.All().OrderBy(town => town.Id).ToList();
             return towns;
         }
     }
