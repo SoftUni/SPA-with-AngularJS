@@ -1,6 +1,3 @@
-using Ads.Web.Areas.HelpPage.ModelDescriptions;
-using Ads.Web.Areas.HelpPage.Models;
-
 namespace Ads.Web.Areas.HelpPage
 {
     using System;
