@@ -179,7 +179,7 @@
         {
             if (model == null)
             {
-                // Sometimes the model is null, so we create an empty model
+                // When no parameters are passed, the model is null, so we create an empty model
                 model = new GetUserAdsBindingModel();
             }
 
