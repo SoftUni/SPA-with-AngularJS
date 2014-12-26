@@ -3,7 +3,6 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
-    using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
     using Ads.Models;
@@ -11,7 +10,6 @@
     using Ads.Web.Properties;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using Microsoft.AspNet.Identity.Owin;
     using Ads.Data;
     using Ads.Common;
 
@@ -146,7 +144,7 @@
         // PUT api/Admin/Ads/Approve/{id}
         [HttpPut]
         [Route("Ads/Approve/{id:int}")]
-        public IHttpActionResult Approve(int id)
+        public IHttpActionResult ApproveAd(int id)
         {
             var ad = this.Data.Ads.All().FirstOrDefault(a => a.Id == id);
 
@@ -165,7 +163,7 @@
         // PUT api/Admin/Ads/Reject/{id}
         [HttpPut]
         [Route("Ads/Reject/{id:int}")]
-        public IHttpActionResult Reject(int id)
+        public IHttpActionResult RejectAd(int id)
         {
             var ad = this.Data.Ads.All().FirstOrDefault(a => a.Id == id);
 
@@ -222,7 +220,7 @@
         // PUT api/Admin/Ads/{id}
         [HttpPut]
         [Route("Ads/{id:int}")]
-        public IHttpActionResult Put(int id, [FromBody]AdminUpdateAdBindingModel model)
+        public IHttpActionResult EditAd(int id, [FromBody]AdminUpdateAdBindingModel model)
         {
             // Validate the input parameters
             if (!ModelState.IsValid)
@@ -273,7 +271,7 @@
         // DELETE /api/Admin/Ads/{id}
         [HttpDelete]
         [Route("Ads/{id:int}")]
-        public IHttpActionResult Delete(int id)
+        public IHttpActionResult DeleteAd(int id)
         {
             var ad = this.Data.Ads.All().FirstOrDefault(d => d.Id == id);
             if (ad == null)
@@ -427,10 +425,10 @@
             );
         }
 
-        // POST api/Admin/SetPassword
-        [HttpPost]
+        // PUT api/Admin/SetPassword
+        [HttpPut]
         [Route("SetPassword")]
-        private async Task<IHttpActionResult> SetUserPassword(AdminSetPasswordBindingModel model)
+        public async Task<IHttpActionResult> SetUserPassword(AdminSetPasswordBindingModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -440,7 +438,7 @@
             var user = await this.Data.Users.All().FirstOrDefaultAsync(u => u.UserName == model.Username);
             if (user == null)
             {
-                return this.BadRequest("Not existing user: " + model.Username);
+                return this.BadRequest("User not found: " + model.Username);
             }
 
             if (user.UserName == "admin")
@@ -469,6 +467,41 @@
             );
         }
 
+        // DELETE /api/Admin/User/{username}
+        /// <summary>
+        /// Deletes user by username. All user ads are also deleted.
+        /// </summary>
+        [HttpDelete]
+        [Route("User/{username}")]
+        public IHttpActionResult DeleteUser(string username)
+        {
+            var user = this.UserManager.FindByName(username);
+            if (user == null)
+            {
+                return this.BadRequest("User not found: " + username);
+            }
+
+            if (user.UserName == "admin")
+            {
+                return this.BadRequest("Deleting user 'admin' is not allowed!");
+            }
+
+            var currentUserId = User.Identity.GetUserId();
+            if (user.Id == currentUserId)
+            {
+                return this.BadRequest("User cannot delete himself: " + username);
+            }
+
+            this.UserManager.Delete(user);
+
+            return this.Ok(
+               new
+               {
+                   message = "User " + username + " deleted successfully."
+               }
+           );
+        }
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
