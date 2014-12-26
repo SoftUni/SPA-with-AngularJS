@@ -25,6 +25,11 @@
     {
         private ApplicationUserManager userManager;
 
+        public UserController(IAdsData data)
+            : base(data)
+        {
+        }
+
         public UserController()
             : base(new AdsData())
         {
