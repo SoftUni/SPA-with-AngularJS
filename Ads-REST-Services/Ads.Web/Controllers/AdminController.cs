@@ -220,7 +220,7 @@
         // PUT api/Admin/Ads/{id}
         [HttpPut]
         [Route("Ads/{id:int}")]
-        public IHttpActionResult EditAd(int id, [FromBody]AdminUpdateAdBindingModel model)
+        public IHttpActionResult EditAd(int id, [FromBody]AdminEditAdBindingModel model)
         {
             // Validate the input parameters
             if (!ModelState.IsValid)
@@ -500,6 +500,114 @@
                    message = "User " + username + " deleted successfully."
                }
            );
+        }
+
+        // GET api/Admin/Categories
+        [HttpGet]
+        [Route("Categories")]
+        public IHttpActionResult GetCategories([FromUri]AdminGetCategoriesBindingModel model)
+        {
+            if (model == null)
+            {
+                // When no parameters are passed, the model is null, so we create an empty model
+                model = new AdminGetCategoriesBindingModel();
+            }
+
+            // Validate the input parameters
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            // Select all categories
+            var categories = this.Data.Categories.All();
+
+            // Apply sorting by the specified column / expression (prefix '-' for descending)
+            if (model.SortBy != null)
+            {
+                try
+                {
+                    // Apply custom sorting order by the specified column / expression
+                    if (model.SortBy.StartsWith("-"))
+                    {
+                        categories = categories.OrderByDescending(
+                            model.SortBy.Substring(1)).ThenBy(c => c.Id);
+                    }
+                    else
+                    {
+                        categories = categories.OrderBy(model.SortBy).ThenBy(c => c.Id);
+                    }
+                }
+                catch (Exception)
+                {
+                    return this.BadRequest("Invalid sorting expression: " + model.SortBy);
+                }
+            }
+            else
+            {
+                // Apply the default sorting order: by name
+                categories = categories.OrderBy(c => c.Name).ThenBy(c => c.Id);
+            }
+
+            // Apply paging: find the requested page (by given start page and page size)
+            int pageSize = Settings.Default.DefaultPageSize;
+            if (model.PageSize.HasValue)
+            {
+                pageSize = model.PageSize.Value;
+            }
+            var numPages = (categories.Count() + pageSize - 1) / pageSize;
+            if (model.StartPage.HasValue)
+            {
+                categories = categories.Skip(pageSize * (model.StartPage.Value - 1));
+            }
+            categories = categories.Take(pageSize);
+
+            // Select the columns to be returned 
+            var categoriesToReturn = categories.ToList().Select(c => new
+            {
+                id = c.Id,
+                username = c.Name
+            });
+
+            return this.Ok(
+                new
+                {
+                    numPages,
+                    categories = categoriesToReturn
+                }
+            );
+        }
+
+        // PUT api/Admin/Categories/{id}
+        [HttpPut]
+        [Route("Categories/{id:int}")]
+        public IHttpActionResult EditCategory(int id, [FromBody]AdminEditCategoryBindingModel model)
+        {
+            // Validate the input parameters
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            // Find the advertisement for editing
+            var category = this.Data.Categories.All().FirstOrDefault(d => d.Id == id);
+            if (category == null)
+            {
+                return this.BadRequest("Category #" + id + " not found!");
+            }
+
+            // Modify the category properties
+            category.Name = model.Name;
+
+            // Save the changes in the database
+            this.Data.Categories.SaveChanges();
+
+            return this.Ok(
+                new
+                {
+                    message = "Category #" + id + " edited successfully."
+                }
+            );
         }
         
         protected override void Dispose(bool disposing)

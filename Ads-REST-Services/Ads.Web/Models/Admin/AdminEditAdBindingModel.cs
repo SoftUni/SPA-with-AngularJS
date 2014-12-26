@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using global::Ads.Models;
 
-    public class AdminUpdateAdBindingModel
+    public class AdminEditAdBindingModel
     {
         [Required]
         public string Title { get; set; }
