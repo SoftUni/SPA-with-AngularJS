@@ -247,7 +247,7 @@
         public IHttpActionResult DeactivateAd(int id)
         {
             return ChangeAdStatus(id, AdvertisementStatus.Inactive,
-                "Advertisement deactivated.");
+                "Advertisement #" + id + " deactivated.");
         }
 
         // PUT api/User/Ads/PublishAgain/{id}
@@ -256,7 +256,7 @@
         public IHttpActionResult PublishAgainAd(int id)
         {
             return ChangeAdStatus(id, AdvertisementStatus.WaitingApproval,
-                "Advertisement submitted for approval.");
+                "Advertisement #" + id + " submitted for approval.");
         }
 
         private IHttpActionResult ChangeAdStatus(int advertisementId,
@@ -266,7 +266,7 @@
 
             if (ad == null)
             {
-                return this.BadRequest("Advertisement " + advertisementId + " not found!");
+                return this.BadRequest("Advertisement #" + advertisementId + " not found!");
             }
 
             // Validate the current user ownership over the ad
@@ -293,7 +293,7 @@
                 .FirstOrDefault(d => d.Id == id);
             if (ad == null)
             {
-                return this.BadRequest("Advertisement " + id + " not found!");
+                return this.BadRequest("Advertisement #" + id + " not found!");
             }
 
             // Validate the current user ownership over the ad
@@ -331,7 +331,7 @@
             var ad = this.Data.Ads.All().FirstOrDefault(d => d.Id == id);
             if (ad == null)
             {
-                return this.BadRequest("Advertisement " + id + " not found!");
+                return this.BadRequest("Advertisement #" + id + " not found!");
             }
 
             // Validate the current user ownership over the ad
@@ -356,7 +356,7 @@
             return this.Ok(
                 new
                 {
-                    message = "Advertisement edited successfully"
+                    message = "Advertisement #" + id + " edited successfully."
                 }
             );
         }
@@ -369,7 +369,7 @@
             var ad = this.Data.Ads.All().FirstOrDefault(d => d.Id == id);
             if (ad == null)
             {
-                return this.BadRequest("Advertisement " + id + " not found!");
+                return this.BadRequest("Advertisement #" + id + " not found!");
             }
 
             // Validate the current user ownership over the add
@@ -386,7 +386,7 @@
             return this.Ok(
                new
                {
-                   message = "Advertisement deleted successfully."
+                   message = "Advertisement #" + id + " deleted successfully."
                }
            );
         }
