@@ -46,11 +46,11 @@
         [Route("Ads")]
         public IHttpActionResult GetAds([FromUri]AdminGetAdsBindingModel model)
         {
-            //if (model == null)
-            //{
-            //    // Sometimes the model is null, so we create an empty model
-            //    model = new AdminGetAdsBindingModel();
-            //}
+            if (model == null)
+            {
+                // Sometimes the model is null, so we create an empty model
+                model = new AdminGetAdsBindingModel();
+            }
 
             // Validate the input parameters
             if (!ModelState.IsValid)
@@ -103,9 +103,9 @@
                 ownerEmail = ad.Owner.Email,
                 ownerPhone = ad.Owner.PhoneNumber,
                 categoryId = ad.CategoryId,
-                categoryName = ad.Category.Name,
+                categoryName = (ad.Category != null) ? ad.Category.Name : null,
                 townId = ad.TownId,
-                townName = ad.Town.Name,
+                townName = (ad.Town != null) ? ad.Town.Name : null,
                 status = ad.Status.ToString(),
             });
 
