@@ -20,7 +20,7 @@
         }
 
         // GET api/Categories
-        /// <returns>List of all categories sorted by name</returns>
+        /// <returns>List of all categories sorted by Id</returns>
         [HttpGet]
         public IEnumerable<Category> GetCategories()
         {
