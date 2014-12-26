@@ -5,6 +5,7 @@
     using System.Data.Entity;
 
     using Ads.Models;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     public class AdsData : IAdsData
     {
@@ -28,6 +29,14 @@
             get
             {
                 return this.GetRepository<ApplicationUser>();
+            }
+        }
+
+        public IRepository<IdentityRole> UserRoles
+        {
+            get
+            {
+                return this.GetRepository<IdentityRole>();
             }
         }
 
@@ -66,12 +75,6 @@
             if (!this.repositories.ContainsKey(typeof(T)))
             {
                 var type = typeof(EfRepository<T>);
-
-                //// if (typeof(T).IsAssignableFrom(typeof(UserProfile)))
-                //// {
-                ////     type = typeof(UsersRepository);
-                //// }
-
                 this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));
             }
 

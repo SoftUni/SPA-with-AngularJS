@@ -8,7 +8,9 @@
     using System.Web.Http;
     using Ads.Models;
     using Ads.Web.Models.Admin;
+    using Ads.Web.Models.Users;
     using Ads.Web.Properties;
+    using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Ads.Data;
     using Ads.Common;
@@ -144,6 +146,44 @@
             );
         }
 
+        // PUT api/Admin/Ads/Approve/{id}
+        [HttpPut]
+        [Route("Ads/Approve/{id:int}")]
+        public IHttpActionResult Approve(int id)
+        {
+            var ad = this.Data.Ads.All().FirstOrDefault(a => a.Id == id);
+
+            if (ad == null)
+            {
+                return this.BadRequest("Advertisement #" + id + " not found!");
+            }
+
+            ad.Status = AdvertisementStatus.Published;
+
+            this.Data.SaveChanges();
+
+            return this.Ok(new { message = "Advertisment #" + id + " approved (published)." });
+        }
+
+        // PUT api/Admin/Ads/Reject/{id}
+        [HttpPut]
+        [Route("Ads/Reject/{id:int}")]
+        public IHttpActionResult Reject(int id)
+        {
+            var ad = this.Data.Ads.All().FirstOrDefault(a => a.Id == id);
+
+            if (ad == null)
+            {
+                return this.BadRequest("Advertisement #" + id + " not found!");
+            }
+
+            ad.Status = AdvertisementStatus.Rejected;
+
+            this.Data.SaveChanges();
+
+            return this.Ok(new { message = "Advertisment #" + id + " rejected." });
+        }
+
         // GET api/Admin/Ads/{id}
         [HttpGet]
         [Route("Ads/{id:int}")]
@@ -157,7 +197,7 @@
 
             if (ad == null)
             {
-                return this.BadRequest("Advertisement " + id + " not found!");
+                return this.BadRequest("Advertisement #" + id + " not found!");
             }
 
             // Select the columns to be returned 
@@ -182,44 +222,6 @@
             return this.Ok(adToReturn);
         }
 
-        // PUT api/Admin/Ads/Approve/{id}
-        [HttpPut]
-        [Route("Ads/Approve/{id:int}")]
-        public IHttpActionResult Approve(int id)
-        {
-            var ad = this.Data.Ads.All().FirstOrDefault(a => a.Id == id);
-
-            if (ad == null)
-            {
-                return this.BadRequest("Advertisement " + id + " not found!");
-            }
-
-            ad.Status = AdvertisementStatus.Published;
-
-            this.Data.SaveChanges();
-
-            return this.Ok(new { message = "Advertisment published." });
-        }
-
-        // PUT api/Admin/Ads/Reject/{id}
-        [HttpPut]
-        [Route("Ads/Reject/{id:int}")]
-        public IHttpActionResult Reject(int id)
-        {
-            var ad = this.Data.Ads.All().FirstOrDefault(a => a.Id == id);
-
-            if (ad == null)
-            {
-                return this.BadRequest("Advertisement " + id + " not found!");
-            }
-
-            ad.Status = AdvertisementStatus.Rejected;
-
-            this.Data.SaveChanges();
-
-            return this.Ok(new { message = "Advertisment rejected." });
-        }
-
         // PUT api/Admin/Ads/{id}
         [HttpPut]
         [Route("Ads/{id:int}")]
@@ -235,7 +237,7 @@
             var ad = this.Data.Ads.All().FirstOrDefault(d => d.Id == id);
             if (ad == null)
             {
-                return this.BadRequest("Advertisement " + id + " not found!");
+                return this.BadRequest("Advertisement #" + id + " not found!");
             }
 
             // Modify the advertisement properties
@@ -266,7 +268,7 @@
             return this.Ok(
                 new
                 {
-                    message = "Advertisement edited successfully"
+                    message = "Advertisement #" + id + " edited successfully."
                 }
             );
         }
@@ -279,7 +281,7 @@
             var ad = this.Data.Ads.All().FirstOrDefault(d => d.Id == id);
             if (ad == null)
             {
-                return this.BadRequest("Advertisement " + id + " not found!");
+                return this.BadRequest("Advertisement #" + id + " not found!");
             }
 
             this.Data.Ads.Delete(ad);
@@ -289,51 +291,9 @@
             return this.Ok(
                new
                {
-                   message = "Advertisement deleted successfully."
+                   message = "Advertisement #" + id + " deleted successfully."
                }
            );
-        }
-
-        // POST api/Admin/SetPassword
-        [HttpPost]
-        [Route("SetPassword")]
-        private async Task<IHttpActionResult> SetUserPassword(AdminSetPasswordBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
-            var user = await this.Data.Users.All().FirstOrDefaultAsync(u => u.UserName == model.Username);
-            if (user == null)
-            {
-                return this.BadRequest("Not existing user: " + model.Username);
-            }
-
-            if (user.UserName == "admin")
-            {
-                return this.BadRequest("Password change for user 'admin' is not allowed!");
-            }
-
-            var removePassResult = await this.UserManager.RemovePasswordAsync(user.Id);
-            if (!removePassResult.Succeeded)
-            {
-                return this.GetErrorResult(removePassResult);
-            }
-
-            var addPassResult = await this.UserManager.AddPasswordAsync(
-                user.Id, model.NewPassword);
-            if (!addPassResult.Succeeded)
-            {
-                return this.GetErrorResult(addPassResult);
-            }
-
-            return this.Ok(
-                new
-                {
-                    message = "Password for user " + user.UserName + " changed successfully.",
-                }
-            );
         }
 
         // GET api/Admin/Users
@@ -341,6 +301,12 @@
         [Route("Users")]
         public IHttpActionResult GetUsers([FromUri]AdminGetUsersBindingModel model)
         {
+            if (model == null)
+            {
+                // When no parameters are passed, the model is null, so we create an empty model
+                model = new AdminGetUsersBindingModel();
+            }
+
             // Validate the input parameters
             if (!ModelState.IsValid)
             {
@@ -389,6 +355,9 @@
             }
             users = users.Take(pageSize);
 
+            // Select the admin role ID
+            var adminRoleId = this.Data.UserRoles.All().First(r => r.Name == "Administrator").Id;
+
             // Select the columns to be returned 
             var usersToReturn = users.ToList().Select(u => new
             {
@@ -396,7 +365,8 @@
                 username = u.UserName,
                 name = u.Name,
                 email = u.Email,
-                phoneNumber = u.PhoneNumber
+                phoneNumber = u.PhoneNumber,
+                isAdmin = u.Roles.Any(r => r.RoleId == adminRoleId)
             });
 
             return this.Ok(
@@ -404,6 +374,100 @@
                 {
                     numPages,
                     users = usersToReturn
+                }
+            );
+        }
+
+        // PUT api/Admin/User/{username}
+        [HttpPut]
+        [Route("User/{username}")]
+        public IHttpActionResult EditUserProfile(string username, 
+            [FromBody]AdminEditUserBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            // Find the user in the database
+            var user = this.Data.Users.All().FirstOrDefault(x => x.UserName == username);
+            if (user == null)
+            {
+                return this.BadRequest("User not found: username = " + username);
+            }
+
+            if (user.UserName == "admin")
+            {
+                return this.BadRequest("Edit profile for user 'admin' is not allowed!");
+            }
+
+            user.Name = model.Name;
+            user.Email = model.Email;
+            user.PhoneNumber = model.PhoneNumber;
+            user.TownId = model.TownId;
+
+            if (model.IsAdmin.HasValue)
+            {
+                if (model.IsAdmin.Value)
+                {
+                    // Make the user administrator
+                    this.UserManager.AddToRole(user.Id, "Administrator");
+                }
+                else
+                {
+                    // Make the user non-administrator
+                    this.UserManager.RemoveFromRole(user.Id, "Administrator");
+                }
+            }
+
+            this.Data.SaveChanges();
+
+            return this.Ok(
+                new
+                {
+                    message = "User " + user.UserName + " edited successfully.",
+                }
+            );
+        }
+
+        // POST api/Admin/SetPassword
+        [HttpPost]
+        [Route("SetPassword")]
+        private async Task<IHttpActionResult> SetUserPassword(AdminSetPasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            var user = await this.Data.Users.All().FirstOrDefaultAsync(u => u.UserName == model.Username);
+            if (user == null)
+            {
+                return this.BadRequest("Not existing user: " + model.Username);
+            }
+
+            if (user.UserName == "admin")
+            {
+                return this.BadRequest("Password change for user 'admin' is not allowed!");
+            }
+
+            var removePassResult = await this.UserManager.RemovePasswordAsync(user.Id);
+            if (!removePassResult.Succeeded)
+            {
+                return this.GetErrorResult(removePassResult);
+            }
+
+            var addPassResult = await this.UserManager.AddPasswordAsync(
+                user.Id, model.NewPassword);
+            if (!addPassResult.Succeeded)
+            {
+                return this.GetErrorResult(addPassResult);
+            }
+
+            return this.Ok(
+                new
+                {
+                    message = "Password for user " + user.UserName + " changed successfully.",
                 }
             );
         }
