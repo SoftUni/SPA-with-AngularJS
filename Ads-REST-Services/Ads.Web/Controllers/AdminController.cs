@@ -8,9 +8,9 @@
     using System.Web.Http;
     using Ads.Models;
     using Ads.Web.Models.Admin;
-    using Ads.Web.Models.Users;
     using Ads.Web.Properties;
     using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
     using Ads.Data;
     using Ads.Common;
@@ -27,6 +27,8 @@
         public AdminController()
             : base(new AdsData())
         {
+            this.userManager = new ApplicationUserManager(
+                new UserStore<ApplicationUser>(new ApplicationDbContext()));
         }
 
         private ApplicationUserManager userManager;
@@ -35,12 +37,7 @@
         {
             get
             {
-                return this.userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-
-            private set
-            {
-                this.userManager = value;
+                return this.userManager;
             }
         }
 
@@ -313,8 +310,8 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            // Select all users
-            var users = this.Data.Users.All();
+            // Select all users along with their roles
+            var users = this.Data.Users.All().Include(u => u.Roles);
 
             // Apply sorting by the specified column / expression (prefix '-' for descending)
             if (model.SortBy != null)
