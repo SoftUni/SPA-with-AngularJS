@@ -106,7 +106,8 @@
             {
                 pageSize = model.PageSize.Value;
             }
-            var numPages = (ads.Count() + pageSize - 1) / pageSize;
+            var numItems = ads.Count();
+            var numPages = (numItems + pageSize - 1) / pageSize;
             if (model.StartPage.HasValue)
             {
                 ads = ads.Skip(pageSize * (model.StartPage.Value - 1));
@@ -135,6 +136,7 @@
             return this.Ok(
                 new
                 {
+                    numItems,
                     numPages,
                     ads = adsToReturn
                 }
@@ -343,7 +345,8 @@
             {
                 pageSize = model.PageSize.Value;
             }
-            var numPages = (users.Count() + pageSize - 1) / pageSize;
+            var numItems = users.Count();
+            var numPages = (numItems + pageSize - 1) / pageSize;
             if (model.StartPage.HasValue)
             {
                 users = users.Skip(pageSize * (model.StartPage.Value - 1));
@@ -367,6 +370,7 @@
             return this.Ok(
                 new
                 {
+                    numItems,
                     numPages,
                     users = usersToReturn
                 }
@@ -555,7 +559,8 @@
             {
                 pageSize = model.PageSize.Value;
             }
-            var numPages = (categories.Count() + pageSize - 1) / pageSize;
+            var numItems = categories.Count();
+            var numPages = (numItems + pageSize - 1) / pageSize;
             if (model.StartPage.HasValue)
             {
                 categories = categories.Skip(pageSize * (model.StartPage.Value - 1));
@@ -572,6 +577,7 @@
             return this.Ok(
                 new
                 {
+                    numItems,
                     numPages,
                     categories = categoriesToReturn
                 }
@@ -715,7 +721,8 @@
             {
                 pageSize = model.PageSize.Value;
             }
-            var numPages = (towns.Count() + pageSize - 1) / pageSize;
+            var numItems = towns.Count();
+            var numPages = (numItems + pageSize - 1) / pageSize;
             if (model.StartPage.HasValue)
             {
                 towns = towns.Skip(pageSize * (model.StartPage.Value - 1));
@@ -732,6 +739,7 @@
             return this.Ok(
                 new
                 {
+                    numItems,
                     numPages,
                     towns = townsToReturn
                 }
