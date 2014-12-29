@@ -59,6 +59,11 @@
         [Route("Login")]
         public async Task<HttpResponseMessage> LoginUser(LoginUserBindingModel model)
         {
+            if (model == null)
+            {
+                model = new LoginUserBindingModel();
+            }
+
             // Invoke the "token" OWIN service to perform the login: /api/token
             // Ugly implementation: I use a server-side HTTP POST because I cannot directly invoke the service (it is deeply hidden in the OAuthAuthorizationServerHandler class)
             var request = HttpContext.Current.Request;
