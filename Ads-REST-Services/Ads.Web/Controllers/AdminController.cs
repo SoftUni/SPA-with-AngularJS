@@ -311,7 +311,7 @@
             }
 
             // Select all users along with their roles
-            var users = this.Data.Users.All().Include(u => u.Roles);
+            var users = this.Data.Users.All().Include(u => u.Roles).Include(u => u.Town);
 
             // Apply sorting by the specified column / expression (prefix '-' for descending)
             if (model.SortBy != null)
@@ -364,6 +364,8 @@
                 name = u.Name,
                 email = u.Email,
                 phoneNumber = u.PhoneNumber,
+                townId = u.TownId,
+                townName = u.TownId != null ? u.Town.Name : null,
                 isAdmin = u.Roles.Any(r => r.RoleId == adminRoleId)
             });
 
