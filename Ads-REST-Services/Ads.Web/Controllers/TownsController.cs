@@ -4,6 +4,10 @@
     using System.Linq;
     using System.Web.Http;
 
+    using Newtonsoft.Json;
+    using System.Web.Http.Results;
+
+    using Ads.Common;
     using Ads.Data;
     using Ads.Models;
 
@@ -22,10 +26,10 @@
         // GET api/Towns
         /// <returns>List of all towns sorted by Id</returns>
         [HttpGet]
-        public IEnumerable<Town> GetTowns()
+        public JsonResult<IEnumerable<Town>> GetTowns()
         {
-            var towns = this.Data.Towns.All().OrderBy(town => town.Id).ToList();
-            return towns;
+            var towns = this.Data.Towns.All().OrderBy(town => town.Id).ToEnumerable();
+            return Json(towns, new JsonSerializerSettings());
         }
     }
 }
