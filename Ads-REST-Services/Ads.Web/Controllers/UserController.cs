@@ -486,6 +486,12 @@
                 return this.BadRequest("Edit profile for user 'admin' is not allowed!");
             }
 
+            var hasEmailTaken = this.Data.Users.All().Any(x => x.Email == model.Email);
+            if (hasEmailTaken)
+            {
+                return this.BadRequest("Invalid email. The email is already taken!");
+            }
+
             currentUser.Name = model.Name;
             currentUser.Email = model.Email;
             currentUser.PhoneNumber = model.PhoneNumber;
@@ -497,8 +503,7 @@
                 new
                 {
                     message = "User profile edited successfully.",
-                }
-            );
+                });
         }
 
         protected override void Dispose(bool disposing)
