@@ -242,6 +242,11 @@
             ad.Text = model.Text;
             if (model.ChangeImage)
             {
+                if (!this.ValidateImageSize(model.ImageDataURL))
+                {
+                    return this.BadRequest(string.Format("The image size should be less than {0}kb!", ImageKilobytesLimit));
+                }
+
                 ad.ImageDataURL = model.ImageDataURL;
             }
             if (model.OwnerUserName != null)
@@ -377,6 +382,24 @@
                     users = usersToReturn
                 }
             );
+        }
+
+        // GET api/Admin/Users/id
+        [HttpGet]
+        [Route("Users/{id}")]
+        public IHttpActionResult GetUserProfileById(string id)
+        {
+            var user = this.Data.Users
+                .All()
+                .Include(x => x.Town)
+                .Include(x => x.Roles)
+                .FirstOrDefault(x => x.Id == id);
+            if (user == null)
+            {
+                return this.BadRequest(string.Format("User # {0} not found: ", id));
+            }
+
+            return this.Ok(user);
         }
 
         // PUT api/Admin/User/{username}
