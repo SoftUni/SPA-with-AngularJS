@@ -27,5 +27,22 @@
             var towns = this.Data.Towns.All().OrderBy(town => town.Id).ToList();
             return towns;
         }
+
+        /// <summary>
+        ///     GET api/Towns/townId
+        /// </summary>
+        /// <returns>Get town by id</returns>
+        public IHttpActionResult GetTownById(int id)
+        {
+            var town = this.Data.Towns
+                .All()
+                .FirstOrDefault(x => x.Id == id);
+            if (town == null)
+            {
+                return this.BadRequest("Town #" + id + " not found!");
+            }
+
+            return this.Ok(town);
+        }
     }
 }

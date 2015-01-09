@@ -27,5 +27,22 @@
             var categories = this.Data.Categories.All().OrderBy(category => category.Id).ToList();
             return categories;
         }
+
+        /// <summary>
+        ///     GET api/Categories/categoryId
+        /// </summary>
+        /// <returns>Get category by id</returns>
+        public IHttpActionResult GetCategoryById(int id)
+        {
+            var category = this.Data.Categories
+                .All()
+                .FirstOrDefault(x => x.Id == id);
+            if (category == null)
+            {
+                return this.BadRequest("Category #" + id + " not found!");
+            }
+
+            return this.Ok(category);
+        }
     }
 }
