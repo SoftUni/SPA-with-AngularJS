@@ -395,12 +395,28 @@
                 .Include(x => x.Town)
                 .Include(x => x.Roles)
                 .FirstOrDefault(x => x.Id == id);
+
             if (user == null)
             {
                 return this.BadRequest(string.Format("User # {0} not found: ", id));
             }
 
-            return this.Ok(user);
+            var adminRoleId = this.Data.UserRoles.All().First(r => r.Name == "Administrator").Id;
+            var isAdmin = user.Roles.Any(r => r.RoleId == adminRoleId);
+
+            var userToReturn = new
+            {
+                isAdmin,
+                user.Id,
+                user.UserName,
+                user.Name,
+                user.Email,
+                user.PhoneNumber,
+                user.Town,
+                user.TownId
+            };
+
+            return this.Ok(userToReturn);
         }
 
         // PUT api/Admin/User/{username}
