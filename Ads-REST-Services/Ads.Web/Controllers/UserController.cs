@@ -149,6 +149,11 @@
                 return this.BadRequest(this.ModelState);
             }
 
+            if (!this.ValidateImageSize(model.ImageDataURL))
+            {
+                return this.BadRequest(string.Format("The image size should be less than {0}kb!", ImageKilobytesLimit));
+            }
+
             // Validate the current user exists in the database
             var currentUserId = User.Identity.GetUserId();
             var currentUser = this.Data.Users.All().FirstOrDefault(x => x.Id == currentUserId);
@@ -344,6 +349,11 @@
             if (ad == null)
             {
                 return this.BadRequest("Advertisement #" + id + " not found!");
+            }
+
+            if (!this.ValidateImageSize(model.ImageDataURL))
+            {
+                return this.BadRequest(string.Format("The image size should be less than {0}kb!", ImageKilobytesLimit));
             }
 
             // Validate the current user ownership over the ad
