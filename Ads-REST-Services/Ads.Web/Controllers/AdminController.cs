@@ -2,6 +2,7 @@
 {
     using System;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -683,7 +684,14 @@
 
             this.Data.Categories.Delete(category);
 
-            this.Data.Categories.SaveChanges();
+            try
+            {
+                this.Data.Categories.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return this.BadRequest("You Can not delete category with advertisements!");
+            }
 
             return this.Ok(
                new
@@ -844,7 +852,16 @@
             }
 
             this.Data.Towns.Delete(town);
-            this.Data.Towns.SaveChanges();
+
+
+            try
+            {
+                this.Data.Towns.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return this.BadRequest("You can not delete a town that is used by users!");
+            }
 
             return this.Ok(
                new
