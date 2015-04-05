@@ -53,6 +53,7 @@
     <Compile Include="Category.cs" />
     <Compile Include="Town.cs" />
     <Compile Include="Advertisement.cs" />
+    <Compile Include="UserSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

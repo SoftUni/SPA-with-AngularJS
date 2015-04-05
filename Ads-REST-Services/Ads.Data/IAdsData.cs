@@ -15,6 +15,8 @@
 
         IRepository<Category> Categories { get; }
 
+        IRepository<UserSession> UserSessions { get; }
+
         int SaveChanges();
     }
 }

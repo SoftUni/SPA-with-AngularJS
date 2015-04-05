@@ -19,14 +19,11 @@
 
         public IDbSet<Category> Categories { get; set; }
 
+        public IDbSet<UserSession> UserSessions { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
-        }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
+        }        
     }
 }

@@ -6,7 +6,9 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Http;
+
     using Ads.Models;
+    using Ads.Web.Attributes;
     using Ads.Web.Models.Admin;
     using Ads.Web.Properties;
     using Microsoft.AspNet.Identity;
@@ -14,7 +16,7 @@
     using Ads.Data;
     using Ads.Common;
 
-    [Authorize(Roles = "Administrator")]
+    [SessionAuthorize(Roles = "Administrator")]
     [RoutePrefix("api/admin")]
     public class AdminController : BaseApiController
     {

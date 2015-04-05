@@ -4,22 +4,27 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
+    using System.Web.Script.Serialization;
+
+    using Ads.Web.Attributes;
     using Ads.Web.Properties;
+    using Ads.Web.UserSessionUtils;
+
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security;
-    using Microsoft.Owin.Security.Cookies;
     using Ads.Data;
     using Ads.Models;
     using Ads.Web.Models.Users;
     using System.Text;
 
-    [Authorize]
+    [SessionAuthorize]
     [RoutePrefix("api/user")]
     public class UserController : BaseApiController
     {
@@ -65,9 +70,11 @@
             }
 
             // Invoke the "token" OWIN service to perform the login: /api/token
-            // Ugly implementation: I use a server-side HTTP POST because I cannot directly invoke the service (it is deeply hidden in the OAuthAuthorizationServerHandler class)
+            // Ugly implementation: I use a server-side HTTP POST because I cannot directly invoke
+            // the service (it is deeply hidden in the OAuthAuthorizationServerHandler class)
             var request = HttpContext.Current.Request;
-            var tokenServiceUrl = request.Url.GetLeftPart(UriPartial.Authority) + request.ApplicationPath + Startup.TokenEndpointPath;
+            var tokenServiceUrl = request.Url.GetLeftPart(UriPartial.Authority) + 
+                request.ApplicationPath + Startup.TokenEndpointPath;
             using (var client = new HttpClient())
             {
                 var requestParams = new List<KeyValuePair<string, string>>
@@ -80,6 +87,22 @@
                 var tokenServiceResponse = await client.PostAsync(tokenServiceUrl, requestParamsFormUrlEncoded);
                 var responseString = await tokenServiceResponse.Content.ReadAsStringAsync();
                 var responseCode = tokenServiceResponse.StatusCode;
+
+                if (responseCode == HttpStatusCode.OK)
+                {
+                    // Sucessful login --> create user session in the database
+                    var jsSerializer = new JavaScriptSerializer();
+                    var responseData = 
+                        jsSerializer.Deserialize<Dictionary<string,string>>(responseString);
+                    var authToken = responseData["access_token"];
+                    var username = responseData["username"];
+                    var userSessionManager = new UserSessionManager();
+                    userSessionManager.CreateUserSession(username, authToken);
+
+                    // Cleanup: delete expired sessions fromthe database
+                    userSessionManager.DeleteExpiredSessions();
+                }
+
                 var responseMsg = new HttpResponseMessage(responseCode)
                 {
                     Content = new StringContent(responseString, Encoding.UTF8, "application/json")
@@ -108,14 +131,14 @@
                 TownId = model.TownId
             };
 
-            IdentityResult result = await this.UserManager.CreateAsync(user, model.Password);
+            var identityResult = await this.UserManager.CreateAsync(user, model.Password);
 
-            if (!result.Succeeded)
+            if (!identityResult.Succeeded)
             {
-                return await this.GetErrorResult(result).ExecuteAsync(new CancellationToken());
+                return await this.GetErrorResult(identityResult).ExecuteAsync(new CancellationToken());
             }
 
-            // Auto login after register (successful user registration should return access_token)
+            // Auto login after registrатион (successful user registration should return access_token)
             var loginResult = this.LoginUser(new LoginUserBindingModel()
             {
                 Username = model.Username,
@@ -126,10 +149,18 @@
 
         // POST api/User/Logout
         [HttpPost]
+        [SessionAuthorize]
         [Route("Logout")]
         public IHttpActionResult Logout()
         {
-            this.Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+            // This does not actually perform logout! OAuth is auhrorization protocol,
+            // so it does not support "logout" by design.
+            this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalBearer);
+            
+            // Delete the user's session from the database (revoke its bearer token)
+            var userSessionManager = new UserSessionManager();
+            userSessionManager.InvalidateUserSession();
+
             return this.Ok(
                 new
                 {
@@ -154,7 +185,7 @@
                 return this.BadRequest(string.Format("The image size should be less than {0}kb!", ImageKilobytesLimit));
             }
 
-            // Validate the current user exists in the database
+            // Validate that the current user exists in the database
             var currentUserId = User.Identity.GetUserId();
             var currentUser = this.Data.Users.All().FirstOrDefault(x => x.Id == currentUserId);
             if (currentUser == null)

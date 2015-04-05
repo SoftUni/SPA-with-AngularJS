@@ -5,6 +5,7 @@
     using System.Data.Entity;
 
     using Ads.Models;
+
     using Microsoft.AspNet.Identity.EntityFramework;
 
     public class AdsData : IAdsData
@@ -62,6 +63,14 @@
             get
             {
                 return this.GetRepository<Category>();
+            }
+        }
+
+        public IRepository<UserSession> UserSessions
+        {
+            get
+            {
+                return this.GetRepository<UserSession>();
             }
         }
 
