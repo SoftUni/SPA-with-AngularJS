@@ -138,7 +138,7 @@
                 return await this.GetErrorResult(identityResult).ExecuteAsync(new CancellationToken());
             }
 
-            // Auto login after registrатион (successful user registration should return access_token)
+            // Auto login after registration (successful user registration should return access_token)
             var loginResult = this.LoginUser(new LoginUserBindingModel()
             {
                 Username = model.Username,
