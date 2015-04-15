@@ -66,10 +66,10 @@ namespace Ads.Web.UserSessionUtils
         /// </summary>
         public void CreateUserSession(string username, string authToken)
         {
-            var user = this.Data.Users.All().First(u => u.UserName == username);
+            var userId = this.Data.Users.All().First(u => u.UserName == username).Id;
             var userSession = new UserSession()
             {
-                OwnerUserId = user.Id,
+                OwnerUserId = userId,
                 AuthToken = authToken
             };
             this.Data.UserSessions.Add(userSession);

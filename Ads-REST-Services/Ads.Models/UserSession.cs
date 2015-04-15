@@ -14,7 +14,7 @@
         public virtual ApplicationUser OwnerUser { get; set; }
 
         [Required]
-        [MaxLength(500)]
+        [MaxLength(1024)]
         public string AuthToken { get; set; }
 
         [Required]

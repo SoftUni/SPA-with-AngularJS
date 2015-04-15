@@ -6,9 +6,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Threading;
     using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Http;
     using System.Web.Script.Serialization;
 
@@ -22,7 +20,8 @@
     using Ads.Data;
     using Ads.Models;
     using Ads.Web.Models.Users;
-    using System.Text;
+
+    using Microsoft.Owin.Testing;
 
     [SessionAuthorize]
     [RoutePrefix("api/user")]
@@ -58,68 +57,20 @@
             }
         }
 
-        // POST api/User/Login
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("Login")]
-        public async Task<HttpResponseMessage> LoginUser(LoginUserBindingModel model)
-        {
-            if (model == null)
-            {
-                model = new LoginUserBindingModel();
-            }
-
-            // Invoke the "token" OWIN service to perform the login: /api/token
-            // Ugly implementation: I use a server-side HTTP POST because I cannot directly invoke
-            // the service (it is deeply hidden in the OAuthAuthorizationServerHandler class)
-            var request = HttpContext.Current.Request;
-            var tokenServiceUrl = request.Url.GetLeftPart(UriPartial.Authority) + 
-                request.ApplicationPath + Startup.TokenEndpointPath;
-            using (var client = new HttpClient())
-            {
-                var requestParams = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("grant_type", "password"),
-                    new KeyValuePair<string, string>("username", model.Username),
-                    new KeyValuePair<string, string>("password", model.Password)
-                };
-                var requestParamsFormUrlEncoded = new FormUrlEncodedContent(requestParams);
-                var tokenServiceResponse = await client.PostAsync(tokenServiceUrl, requestParamsFormUrlEncoded);
-                var responseString = await tokenServiceResponse.Content.ReadAsStringAsync();
-                var responseCode = tokenServiceResponse.StatusCode;
-
-                if (responseCode == HttpStatusCode.OK)
-                {
-                    // Sucessful login --> create user session in the database
-                    var jsSerializer = new JavaScriptSerializer();
-                    var responseData = 
-                        jsSerializer.Deserialize<Dictionary<string,string>>(responseString);
-                    var authToken = responseData["access_token"];
-                    var username = responseData["username"];
-                    var userSessionManager = new UserSessionManager();
-                    userSessionManager.CreateUserSession(username, authToken);
-
-                    // Cleanup: delete expired sessions fromthe database
-                    userSessionManager.DeleteExpiredSessions();
-                }
-
-                var responseMsg = new HttpResponseMessage(responseCode)
-                {
-                    Content = new StringContent(responseString, Encoding.UTF8, "application/json")
-                };
-                return responseMsg;
-            }
-        }
-
         // POST api/User/Register
         [HttpPost]
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<HttpResponseMessage> RegisterUser(RegisterUserBindingModel model)
+        public async Task<IHttpActionResult> RegisterUser(RegisterUserBindingModel model)
         {
+            if (model == null)
+            {
+                return this.BadRequest("Invalid user data");
+            }
+
             if (!ModelState.IsValid)
             {
-                return await this.BadRequest(this.ModelState).ExecuteAsync(new CancellationToken());
+                return this.BadRequest(this.ModelState);
             }
 
             var user = new ApplicationUser
@@ -135,16 +86,59 @@
 
             if (!identityResult.Succeeded)
             {
-                return await this.GetErrorResult(identityResult).ExecuteAsync(new CancellationToken());
+                return this.GetErrorResult(identityResult);
             }
 
             // Auto login after registration (successful user registration should return access_token)
-            var loginResult = this.LoginUser(new LoginUserBindingModel()
+            var loginResult = await this.LoginUser(new LoginUserBindingModel()
             {
                 Username = model.Username,
                 Password = model.Password
             });
-            return await loginResult;
+            return loginResult;
+        }
+
+        // POST api/User/Login
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("Login")]
+        public async Task<IHttpActionResult> LoginUser(LoginUserBindingModel model)
+        {
+            if (model == null)
+            {
+                return this.BadRequest("Invalid user data");
+            }
+
+            // Invoke the "token" OWIN service to perform the login (POST /api/token)
+            // Use Microsoft.Owin.Testing.TestServer to perform in-memory HTTP POST request
+            var testServer = TestServer.Create<Startup>();
+            var requestParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("grant_type", "password"),
+                new KeyValuePair<string, string>("username", model.Username),
+                new KeyValuePair<string, string>("password", model.Password)
+            };
+            var requestParamsFormUrlEncoded = new FormUrlEncodedContent(requestParams);
+            var tokenServiceResponse = await testServer.HttpClient.PostAsync(
+                Startup.TokenEndpointPath, requestParamsFormUrlEncoded);
+
+            if (tokenServiceResponse.StatusCode == HttpStatusCode.OK)
+            {
+                // Sucessful login --> create user session in the database
+                var responseString = await tokenServiceResponse.Content.ReadAsStringAsync();
+                var jsSerializer = new JavaScriptSerializer();
+                var responseData =
+                    jsSerializer.Deserialize<Dictionary<string, string>>(responseString);
+                var authToken = responseData["access_token"];
+                var username = responseData["username"];
+                var userSessionManager = new UserSessionManager();
+                userSessionManager.CreateUserSession(username, authToken);
+
+                // Cleanup: delete expired sessions fromthe database
+                userSessionManager.DeleteExpiredSessions();
+            }
+
+            return this.ResponseMessage(tokenServiceResponse);
         }
 
         // POST api/User/Logout
@@ -153,8 +147,8 @@
         [Route("Logout")]
         public IHttpActionResult Logout()
         {
-            // This does not actually perform logout! OAuth is auhrorization protocol,
-            // so it does not support "logout" by design.
+            // This does not actually perform logout! The OWIN OAuth implementation
+            // does not support "revoke OAuth token" (logout) by design.
             this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalBearer);
             
             // Delete the user's session from the database (revoke its bearer token)
@@ -361,7 +355,8 @@
                 categoryId = ad.CategoryId,
                 categoryName = ad.Category == null ? null : ad.Category.Name,
                 townId = ad.TownId,
-                townName = ad.Town == null ? null : ad.Town.Name
+                townName = ad.Town == null ? null : ad.Town.Name,
+                status = ad.Status.ToString()
             });
         }
 
