@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html ng-app="FirstDemoApp">
+<p ng-include="'./partials/header.html'"></p>
+<body ng-controller="FirstDemoController">
+<h1>Hello World!</h1>
+<h1>Angular Seed</h1>
+<p>{{firstMessage}}</p>
+<ul>
+    <li ng-repeat="person in people">{{person.name}} ({{person.hometown}})</li>
+</ul>
+<p></p>
+<script src="lib/angular/angular.js"></script>
+<script src="js/app.js"></script>
+<script src="js/controllers/FirstDemoController.js"></script>
+</body>
+</html>
