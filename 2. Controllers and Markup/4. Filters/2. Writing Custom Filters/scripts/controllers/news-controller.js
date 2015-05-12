@@ -11,7 +11,7 @@ app.controller('NewsController',
 				name: 'Petya Grozdarska',
 				company: 'Software University',
 				picture: 'https://softuni.bg/Users/Profile/ShowAvatar/854e1366-c252-460d-afcd-b4adce092798',
-				role: 1
+				role: 3
 			},
 			comments: [
 				{

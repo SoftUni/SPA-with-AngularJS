@@ -5,18 +5,16 @@
 </head>
 <body ng-app="app" ng-controller="ExpressionsController">
 
-	<div>{{ [12, 32, 42, 2, 1, 43, 222].sort()[0]}}</div>
+	<div>{{ [12, 32, 42, 2, 1, 43, 222, 3].sort()}}</div>
 	<div>{{ 'Hello ' + 'Pesho' }}</div>
 	<div>{{ 'Maraba ' + name }}</div>
 
-	<script type="text/javascript" src="../node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
 	<script>
 		var app = angular.module('app', [])
 			.controller('ExpressionsController', function ExpressionsController($scope) {
-				// Expressions not support all JavaScript syntax. They support only subset of JS functionality.
-				$scope.name = 'Svetlin';
-				$scope.firstValue = 34;
-				$scope.secondValue = 83;
+				// Expressions do not support all JavaScript syntax. They support only subset of JS functionality.
+				$scope.name = 'Angel';
 			});
 	</script>
 </body>

@@ -2,8 +2,6 @@
 <head>
   <meta charset="utf-8">
   <title>My AngularJS App</title>
-  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css" />
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body ng-app="myApp">
@@ -26,8 +24,8 @@
 				<!-- Filters -->
 				
 				<span><strong>Number: </strong>{{ 2 | number:2}}</span>
-				<span><strong>Number: </strong>{{ 2.23123423 | number:2}}</span>
-				<span><strong>Price: </strong>{{news.price | currency}}</span>
+				<span><strong>Number: </strong>{{ 2.2323423 | number:2}}</span>
+				<span><strong>Price: </strong>{{news.price | currency:'лв'}}</span>
 				
 				<!-- Filters -->
 			
@@ -81,8 +79,8 @@
 	</div>
 
 
-	<script src="../../node_modules/angular/angular.js"></script>
-	<script src="../../node_modules/angular-route/angular-route.js"></script>
+	<script src="lib/angular/angular.js"></script>
+	<script src="lib/angular-route/angular-route.js"></script>
 	<script src="scripts/app.js"></script>
 	<script src="scripts/controllers/news-controller.js"></script>
 </body>
