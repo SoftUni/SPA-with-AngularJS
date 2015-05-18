@@ -1,4 +1,6 @@
-﻿namespace SocialNetwork.Services.Controllers
+﻿using System;
+
+namespace SocialNetwork.Services.Controllers
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -100,8 +102,15 @@
             currentUser.Gender = model.Gender;
             currentUser.ProfileImageData = model.ProfileImageData;
 
-            currentUser.ProfileImageDataMinified =
-                model.ProfileImageData ?? ImageUtility.Resize(model.ProfileImageData, 100, 100);
+            try
+            {
+                currentUser.ProfileImageDataMinified = model.ProfileImageData == null ?
+                    null : ImageUtility.Resize(model.ProfileImageData, 100, 100);
+            }
+            catch (FormatException)
+            {
+                return this.BadRequest("Invalid Base64 string format.");
+            }
 
             currentUser.CoverImageData = model.CoverImageData;
 
