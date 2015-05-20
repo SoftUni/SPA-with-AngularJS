@@ -104,8 +104,17 @@ namespace SocialNetwork.Services.Controllers
 
             try
             {
-                currentUser.ProfileImageDataMinified = model.ProfileImageData == null ?
-                    null : ImageUtility.Resize(model.ProfileImageData, 100, 100);
+                string source = model.ProfileImageData;
+                if (source != null)
+                {
+                    string base64 = source.Substring(source.IndexOf(',') + 1);
+                    currentUser.ProfileImageDataMinified = string.Format("{0}{1}",
+                        "data:image/jpg;base64,", ImageUtility.Resize(base64, 100, 100));
+                }
+                else
+                {
+                    currentUser.ProfileImageDataMinified = null;
+                }
             }
             catch (FormatException)
             {
