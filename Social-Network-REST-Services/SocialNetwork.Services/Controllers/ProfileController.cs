@@ -266,7 +266,6 @@ namespace SocialNetwork.Services.Controllers
                 return this.NotFound();
             }
 
-
             var userId = this.User.Identity.GetUserId();
             if (userId == null)
             {

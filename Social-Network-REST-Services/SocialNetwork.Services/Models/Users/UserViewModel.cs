@@ -35,8 +35,8 @@ namespace SocialNetwork.Services.Models.Users
                 IsFriend = user.Friends
                     .Any(fr => fr.Id == loggedUser.Id),
                 HasPendingRequest = user.FriendRequests
-                    .Any(r => r.FromId == loggedUser.Id
-                    || r.ToId == loggedUser.Id)
+                    .Any(r => r.Status == FriendRequestStatus.Pending && 
+                        (r.FromId == loggedUser.Id || r.ToId == loggedUser.Id))
             };
         }
     }
