@@ -100,6 +100,12 @@ namespace SocialNetwork.Services.Controllers
             currentUser.Name = model.Name;
             currentUser.Email = model.Email;
             currentUser.Gender = model.Gender;
+
+            if (model.ProfileImageData != null && model.ProfileImageData.IndexOf(',') == -1)
+            {
+                model.ProfileImageData = string.Format("{0}{1}", "data:image/jpg;base64,", model.ProfileImageData);
+            }
+
             currentUser.ProfileImageData = model.ProfileImageData;
 
             try
@@ -119,6 +125,11 @@ namespace SocialNetwork.Services.Controllers
             catch (FormatException)
             {
                 return this.BadRequest("Invalid Base64 string format.");
+            }
+
+            if (model.CoverImageData != null && model.CoverImageData.IndexOf(',') == -1)
+            {
+                model.CoverImageData = string.Format("{0}{1}", "data:image/jpg;base64,", model.CoverImageData);
             }
 
             currentUser.CoverImageData = model.CoverImageData;
@@ -210,6 +221,16 @@ namespace SocialNetwork.Services.Controllers
             if (userId == null)
             {
                 return this.BadRequest();
+            }
+
+            if (feedModel == null)
+            {
+                return this.BadRequest("No page size specified.");
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
             }
 
             var user = this.SocialNetworkData.Users.GetById(userId);

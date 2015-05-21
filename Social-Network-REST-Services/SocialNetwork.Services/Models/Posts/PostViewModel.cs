@@ -12,9 +12,9 @@
     {
         public int Id { get; set; }
 
-        public UserViewModelMinified Author { get; set; }
+        public UserViewModelPreview Author { get; set; }
 
-        public UserViewModelMinified WallOwner { get; set; }
+        public UserViewModelPreview WallOwner { get; set; }
 
         public string PostContent { get; set; }
 
@@ -33,8 +33,8 @@
             return new PostViewModel()
             {
                 Id = p.Id,
-                Author = UserViewModelMinified.Create(p.Author),
-                WallOwner = UserViewModelMinified.Create(p.WallOwner),
+                Author = UserViewModelPreview.Create(p.Author, currentUser),
+                WallOwner = UserViewModelPreview.Create(p.WallOwner, currentUser),
                 PostContent = p.Content,
                 Date = p.Date,
                 LikesCount = p.Likes.Count,
@@ -42,6 +42,7 @@
                     .Any(l => l.UserId == currentUser.Id),
                 TotalCommentsCount = p.Comments.Count,
                 Comments = p.Comments
+                    .Reverse()
                     .Take(3)
                     .Select(c => CommentViewModel.Create(c, currentUser))
             };

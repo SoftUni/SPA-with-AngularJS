@@ -188,7 +188,9 @@ namespace SocialNetwork.Services.Controllers
                 return this.BadRequest("Invalid session token.");
             }
 
-            return this.Ok(UserViewModelMinified.Create(targetUser));
+            var loggedUser = this.SocialNetworkData.Users.GetById(loggedUserId);
+
+            return this.Ok(UserViewModelPreview.Create(targetUser, loggedUser));
         }
 
         [HttpGet]

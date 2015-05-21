@@ -281,6 +281,7 @@
     <Compile Include="Models\Users\RegisterUserBindingModel.cs" />
     <Compile Include="Models\Users\GetWallBindingModel.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
+    <Compile Include="Models\Users\UserViewModelPreview.cs" />
     <Compile Include="Models\Users\UserViewModelMinified.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
